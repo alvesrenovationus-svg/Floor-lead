@@ -26,11 +26,11 @@
 
   /* ---------- Before / After slider ---------- */
   var projects = [
-    { key: 'bedroom', title: 'Bedroom — LVP Installation', text: 'Old flooring removed, subfloor prepped and leveled, then new luxury vinyl plank installed with clean transitions and baseboards.' },
-    { key: 'bathroom', title: 'Bathroom — Full Floor Remodel', text: 'Demolition down to the subfloor, then large-format marble-look porcelain tile, toilet reset and new trim.' },
-    { key: 'living', title: 'Living Area — Wood-Look Vinyl', text: 'Underlayment and protection laid out, then a warm wood-look vinyl plank floor installed wall to wall.' },
-    { key: 'stairs', title: 'Staircase — New Treads & Risers', text: 'Old stairs stripped and rebuilt with wood-look treads and crisp white risers to match the new floors.' },
-    { key: 'hall', title: 'Hallway & Closet — Vinyl Plank', text: 'Bare subfloor turned into a finished space with durable, waterproof vinyl plank. Perfect for hallways, closets and small rooms.' }
+    { key: 'bathroom', title: 'Bathroom — Full Remodel', text: 'Demolition down to the subfloor, then large-format marble-look porcelain tile, toilet reset and new trim.' },
+    { key: 'stairs', title: 'Staircase — Custom Stair Capping', text: 'Old stairs stripped and rebuilt with wood-look treads and crisp white risers to match the new floors.' },
+    { key: 'bedroom', title: 'Bedroom — New Flooring', text: 'Old flooring removed, subfloor prepped and leveled, then new luxury vinyl plank installed with clean transitions and baseboards.' },
+    { key: 'living', title: 'Living Area — Renovation', text: 'Underlayment and protection laid out, then a warm wood-look vinyl plank floor installed wall to wall.' },
+    { key: 'hall', title: 'Hallway & Closet — Makeover', text: 'Bare subfloor turned into a finished space with durable, waterproof vinyl plank. Perfect for hallways, closets and small rooms.' }
   ];
   var ba = document.getElementById('ba');
   var range = ba.querySelector('.ba__range');

@@ -15,16 +15,17 @@ assets/img/*.jpg    Fotos da pasta "Muse" do Google Drive (convertidas de HEIC e
 
 ## Seções
 
-1. **Hero** com selo Licensed & Insured e formulário rápido (nome, telefone, serviço, ZIP)
-2. **Faixa de confiança** (Licensed & Insured, orçamento grátis em casa, Philadelphia & NJ, preço fixo)
-3. **Serviços** em dois grupos — *Flooring* (vinyl, laminado/hardwood, tile, subfloor, stair capping) e
-   *Renovation & Exterior* (banheiro, drywall, pintura, framing/trim, stucco/masonry, pressure washing)
-4. **Antes & Depois** — slider arrastável com 5 projetos reais (quarto, banheiro, sala, escada, corredor)
-5. **Galeria** em slides (carrossel com autoplay)
-6. **Por que nós** + processo em 3 passos
-7. **Formulário completo de leads** — serviço desejado, tipo de piso (aparece só se escolher Flooring),
+1. **Hero** — "Home renovations done right", selo Licensed & Insured e formulário rápido (nome, telefone, serviço, ZIP)
+2. **Faixa de confiança** — Licensed & Insured, orçamento grátis em casa, Philadelphia & NJ, preço fixo
+3. **Serviços principais** (cartões com foto, mesmo peso): Bathroom Remodeling, Custom Stair Capping,
+   Flooring Installation, Stucco & Exterior + **Also available**: drywall, pintura, framing/trim,
+   masonry, subfloor, pressure washing
+4. **Why Us** — Quality • Precision • Trust, 6 qualidades da empresa e processo em 3 passos
+5. **Antes & Depois** — slider arrastável (banheiro, escada, quarto, sala, corredor)
+6. **Galeria** em slides com todos os tipos de trabalho
+7. **Formulário completo de leads** — serviço desejado, tipo de piso (só aparece se escolher Flooring),
    tamanho do projeto, quando quer começar + nome, telefone, e-mail, ZIP, observações
-8. Rodapé + barra fixa no celular (Ligar / Texto / Orçamento)
+8. Rodapé (logo, contato, Instagram, área atendida) + barra fixa no celular (Ligar / Texto / Orçamento)
 
 ## Para onde vão os leads
 
