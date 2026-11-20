@@ -61,7 +61,7 @@
 
   /* ---------- Before / After slider ---------- */
   var projects = [
-    { key: 'bathroom', title: 'Bathroom — Full Remodel', text: 'Demolition down to the subfloor, then large-format marble-look porcelain tile, toilet reset and new trim.' },
+    { key: 'bathroom', title: 'Bathroom — Full Remodel', text: 'Gutted down to the studs and rebuilt: new walls, porcelain tile floor and wainscot, glass shower panel, wall-hung toilet, recessed lighting, fresh trim and paint.' },
     { key: 'stairs', title: 'Staircase — Custom Stair Capping', text: 'Old stairs stripped and rebuilt with wood-look treads and crisp white risers to match the new floors.' },
     { key: 'bedroom', title: 'Bedroom — New Flooring', text: 'Old flooring removed, subfloor prepped and leveled, then new luxury vinyl plank installed with clean transitions and baseboards.' },
     { key: 'living', title: 'Living Area — Renovation', text: 'Underlayment and protection laid out, then a warm wood-look vinyl plank floor installed wall to wall.' },
@@ -74,9 +74,45 @@
   var baTitle = document.getElementById('baTitle');
   var baText = document.getElementById('baText');
 
-  function setPos(v) { ba.style.setProperty('--pos', v + '%'); }
+  function setPos(v) {
+    v = Math.max(0, Math.min(100, +v));
+    ba.style.setProperty('--pos', v + '%');
+    range.value = v;
+    ba.classList.toggle('is-full-before', v >= 97);
+    ba.classList.toggle('is-full-after', v <= 3);
+  }
+  // Keyboard / screen readers
   range.addEventListener('input', function () { setPos(range.value); });
-  setPos(range.value);
+  // Drag anywhere on the image (mouse + touch), all the way to either edge
+  var dragging = false;
+  function posFromEvent(e) {
+    var r = ba.getBoundingClientRect();
+    return ((e.clientX - r.left) / r.width) * 100;
+  }
+  ba.addEventListener('pointerdown', function (e) {
+    if (e.target.closest('.ba__label')) return;
+    dragging = true; ba.classList.add('is-dragging');
+    ba.setPointerCapture(e.pointerId);
+    setPos(posFromEvent(e));
+  });
+  ba.addEventListener('pointermove', function (e) { if (dragging) setPos(posFromEvent(e)); });
+  ['pointerup', 'pointercancel'].forEach(function (ev) {
+    ba.addEventListener(ev, function () { dragging = false; ba.classList.remove('is-dragging'); });
+  });
+  // Tap "Before" / "After" to see that photo in full
+  function animateTo(target) {
+    var start = parseFloat(range.value), t0 = null;
+    function step(ts) {
+      if (!t0) t0 = ts;
+      var k = Math.min(1, (ts - t0) / 450), ease = 1 - Math.pow(1 - k, 3);
+      setPos(start + (target - start) * ease);
+      if (k < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+  ba.querySelector('.ba__label--before').addEventListener('click', function () { animateTo(100); });
+  ba.querySelector('.ba__label--after').addEventListener('click', function () { animateTo(0); });
+  setPos(50);
 
   document.querySelectorAll('.ba-tab').forEach(function (tab) {
     tab.addEventListener('click', function () {
@@ -91,7 +127,7 @@
         imgAfter.alt = 'After: ' + p.title;
         baTitle.textContent = p.title;
         baText.textContent = p.text;
-        range.value = 50; setPos(50);
+        setPos(50);
         ba.classList.remove('is-fading');
       }, 220);
     });

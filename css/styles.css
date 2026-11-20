@@ -140,13 +140,19 @@ h1, h2, h3 { font-family: var(--display); line-height: 1.15; margin: 0 0 .5em; }
 .ba { position: relative; aspect-ratio: 3 / 4; border-radius: 18px; overflow: hidden; box-shadow: 0 30px 60px -20px rgba(0, 0, 0, .6); user-select: none; --pos: 50%; background: #000; }
 .ba__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .ba__before-wrap { position: absolute; inset: 0; clip-path: inset(0 calc(100% - var(--pos)) 0 0); }
-.ba__label { position: absolute; top: 14px; padding: 5px 12px; border-radius: 6px; font-weight: 800; font-size: .8rem; text-transform: uppercase; letter-spacing: .08em; pointer-events: none; }
+.ba__label { position: absolute; top: 14px; z-index: 3; padding: 7px 14px; border: 0; border-radius: 6px; font: inherit; font-weight: 800; font-size: .8rem; text-transform: uppercase; letter-spacing: .08em; cursor: pointer; transition: opacity .2s, transform .15s; }
+.ba__label:hover { transform: translateY(-1px); }
 .ba__label--before { left: 14px; background: rgba(0, 0, 0, .85); color: var(--white); }
 .ba__label--after { right: 14px; background: var(--gold); color: var(--black); }
 .ba__handle { position: absolute; top: 0; bottom: 0; left: var(--pos); width: 4px; margin-left: -2px; background: var(--gold); pointer-events: none; }
 .ba__handle span { position: absolute; top: 50%; left: 50%; width: 46px; height: 46px; transform: translate(-50%, -50%); border-radius: 50%; background: var(--gold); box-shadow: 0 4px 14px rgba(0, 0, 0, .4); }
 .ba__handle span::before { content: "◂ ▸"; position: absolute; inset: 0; display: grid; place-items: center; color: var(--black); font-weight: 900; font-size: .9rem; letter-spacing: -1px; }
-.ba__range { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: ew-resize; margin: 0; }
+.ba { cursor: ew-resize; touch-action: pan-y; }
+.ba__range { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; margin: 0; pointer-events: none; }
+.ba:focus-within .ba__handle span { outline: 3px solid var(--white); }
+.ba.is-dragging .ba__img { transition: none; }
+.ba.is-full-before .ba__label--after, .ba.is-full-after .ba__label--before { opacity: .45; }
+.ba__img { pointer-events: none; -webkit-user-drag: none; }
 .ba.is-fading .ba__img { opacity: 0; }
 .ba__img { transition: opacity .25s; }
 .ba-info h3 { font-size: 1.8rem; }
