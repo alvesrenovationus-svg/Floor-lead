@@ -15,14 +15,15 @@ assets/img/*.jpg    Fotos da pasta "Muse" do Google Drive (convertidas de HEIC e
 
 ## Seções
 
-1. **Hero** com formulário rápido (nome, telefone, tipo de projeto, ZIP)
-2. **Faixa de confiança** (experiência em big-box, orçamento grátis, preço fixo, agilidade)
-3. **Serviços** + chamada para orçamento grátis
+1. **Hero** com selo Licensed & Insured e formulário rápido (nome, telefone, serviço, ZIP)
+2. **Faixa de confiança** (Licensed & Insured, orçamento grátis em casa, Philadelphia & NJ, preço fixo)
+3. **Serviços** em dois grupos — *Flooring* (vinyl, laminado/hardwood, tile, subfloor, stair capping) e
+   *Renovation & Exterior* (banheiro, drywall, pintura, framing/trim, stucco/masonry, pressure washing)
 4. **Antes & Depois** — slider arrastável com 5 projetos reais (quarto, banheiro, sala, escada, corredor)
 5. **Galeria** em slides (carrossel com autoplay)
 6. **Por que nós** + processo em 3 passos
-7. **Formulário completo de leads** — mesmas perguntas do formulário do Facebook/Instagram
-   (tipo de piso, tamanho do projeto, quando quer começar) + nome, telefone, e-mail, ZIP, observações
+7. **Formulário completo de leads** — serviço desejado, tipo de piso (aparece só se escolher Flooring),
+   tamanho do projeto, quando quer começar + nome, telefone, e-mail, ZIP, observações
 8. Rodapé + barra fixa no celular (Ligar / Texto / Orçamento)
 
 ## Para onde vão os leads
@@ -30,7 +31,7 @@ assets/img/*.jpg    Fotos da pasta "Muse" do Google Drive (convertidas de HEIC e
 Os formulários enviam um `POST` para o Google Apps Script configurado em `js/main.js`
 (`LEAD_ENDPOINT` — a mesma URL que já era usada no formulário anterior). Campos enviados:
 
-`name, phone, email, zip, flooring, size, timeline, notes, source, page, submitted_at, utm_source, utm_medium, utm_campaign, utm_content, fbclid, gclid`
+`name, phone, email, zip, service, flooring, size, timeline, notes, source, page, submitted_at, utm_source, utm_medium, utm_campaign, utm_content, fbclid, gclid`
 
 Se precisar recriar o script, cole o código abaixo em **Extensões → Apps Script** de uma planilha
 e publique como **App da Web** (Executar como: você / Acesso: qualquer pessoa):
@@ -39,7 +40,7 @@ e publique como **App da Web** (Executar como: você / Acesso: qualquer pessoa):
 function doPost(e) {
   var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Leads')
            || SpreadsheetApp.getActiveSpreadsheet().insertSheet('Leads');
-  var cols = ['submitted_at','name','phone','email','zip','flooring','size','timeline','notes',
+  var cols = ['submitted_at','name','phone','email','zip','service','flooring','size','timeline','notes',
               'source','page','utm_source','utm_medium','utm_campaign','utm_content','fbclid','gclid'];
   if (sheet.getLastRow() === 0) sheet.appendRow(cols);
   sheet.appendRow(cols.map(function (c) { return e.parameter[c] || ''; }));

@@ -9,7 +9,7 @@
      previous form). See README for the Apps Script code.
      ========================================================== */
   var LEAD_ENDPOINT = 'https://script.google.com/macros/s/AKfycbzz7dKqVolkLgmv5ea4tjSviIpFymTnECYXR3lXPasLw4Bojdopa4eu1qcdbIFxvi9BPg/exec';
-  var BUSINESS_PHONE = '+12675180751';
+  var BUSINESS_PHONE = '+12676160381';
 
   document.getElementById('year').textContent = new Date().getFullYear();
 
@@ -99,6 +99,19 @@
     carousel.addEventListener(ev, function () { clearInterval(autoplay); }, { passive: true, once: true });
   });
 
+  /* ---------- Show flooring-type question only for flooring ---------- */
+  var flooringField = document.getElementById('flooringField');
+  if (flooringField) {
+    var qf = flooringField.closest('form');
+    var syncFlooring = function () {
+      var v = qf.elements.service.value;
+      flooringField.hidden = !(v === '' || /flooring/i.test(v));
+    };
+    qf.addEventListener('change', syncFlooring);
+    qf.addEventListener('reset', function () { setTimeout(syncFlooring, 0); });
+    syncFlooring();
+  }
+
   /* ---------- Reveal on scroll ---------- */
   if ('IntersectionObserver' in window) {
     var io = new IntersectionObserver(function (entries) {
@@ -131,13 +144,10 @@
     if (!/^\d{5}(-\d{4})?$/.test(zip.value.trim())) bad(zip, 'a valid ZIP code');
     if (email && email.value.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim())) bad(email, 'a valid email');
 
-    var flooring = form.elements.flooring;
-    if (flooring) {
-      var val = flooring.value; // works for <select> and RadioNodeList
-      if (!val) {
-        var target = flooring.tagName === 'SELECT' ? flooring : form.querySelector('input[name="flooring"]').closest('.chips');
-        bad(target, 'project type');
-      }
+    var service = form.elements.service;
+    if (service && !service.value) { // works for <select> and RadioNodeList
+      var target = service.tagName === 'SELECT' ? service : form.querySelector('input[name="service"]').closest('.chips');
+      bad(target, 'the service you need');
     }
     return errors;
   }
@@ -185,8 +195,8 @@
         })
         .catch(function () {
           status.classList.add('is-error');
-          var sms = 'sms:' + BUSINESS_PHONE + '?&body=' + encodeURIComponent('Hi Alves Renovation, I would like a quote. Name: ' + data.get('name') + ', ZIP: ' + data.get('zip') + ', Project: ' + (data.get('flooring') || ''));
-          status.innerHTML = 'Something went wrong. Please <a href="' + sms + '">text us</a> or call (267) 518-0751.';
+          var sms = 'sms:' + BUSINESS_PHONE + '?&body=' + encodeURIComponent('Hi Alves Renovation, I would like a quote. Name: ' + data.get('name') + ', ZIP: ' + data.get('zip') + ', Service: ' + (data.get('service') || '') + (data.get('flooring') ? ' (' + data.get('flooring') + ')' : ''));
+          status.innerHTML = 'Something went wrong. Please <a href="' + sms + '">text us</a> or call (267) 616-0381.';
         })
         .finally(function () { btn.disabled = false; btn.textContent = btnText; });
     });
