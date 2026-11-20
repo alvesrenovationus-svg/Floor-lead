@@ -1,186 +1,61 @@
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alves Renovation - Get Your Free Quote</title>
-    <style>
-        /* Basic Reset & Font */
-        body, html {
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-            background-color: #f4f7f6;
-            color: #333;
-            line-height: 1.6;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
+# Alves Renovation — Landing Page + Captação de Leads
 
-        /* Main Container */
-        .container {
-            background-color: #ffffff;
-            padding: 2.5rem;
-            border-radius: 10px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-            max-width: 500px;
-            width: 100%;
-            box-sizing: border-box;
-            margin: 20px;
-        }
+Site estático (HTML/CSS/JS puro, sem build) para a Alves Renovation.
 
-        /* Header */
-        .header {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-        .header h1 {
-            font-size: 2.2rem;
-            color: #1a237e; /* A professional dark blue */
-            margin-bottom: 0.5rem;
-        }
-        .header p {
-            font-size: 1.1rem;
-            color: #555;
-        }
+## Estrutura
 
-        /* Form Styling */
-        .lead-form .form-group {
-            margin-bottom: 1.5rem;
-        }
-        .lead-form label {
-            display: block;
-            font-weight: bold;
-            margin-bottom: 0.5rem;
-            color: #444;
-        }
-        .lead-form input[type="text"],
-        .lead-form input[type="email"],
-        .lead-form input[type="tel"] {
-            width: 100%;
-            padding: 12px 15px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 1rem;
-            box-sizing: border-box;
-            transition: border-color 0.3s;
-        }
-        .lead-form input:focus {
-            outline: none;
-            border-color: #1a237e;
-        }
+```
+index.html          Landing page completa
+css/styles.css      Estilos (paleta da marca: azul-marinho #0B2135 / #14365C + amarelo #FFC107)
+js/main.js          Slider antes/depois, carrossel, menu mobile e envio dos leads
+assets/logo.svg     Logo PROVISÓRIO — substitua pelo logo oficial (mesmo nome, ou ajuste o <img>)
+assets/img/*.jpg    Fotos da pasta "Muse" do Google Drive (convertidas de HEIC e otimizadas)
+```
 
-        /* Button Styling */
-        .submit-btn {
-            background-color: #28a745; /* A positive green color */
-            color: #ffffff;
-            border: none;
-            padding: 15px 20px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            width: 100%;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s, transform 0.2s;
-        }
-        .submit-btn:hover {
-            background-color: #218838;
-            transform: translateY(-2px);
-        }
+## Seções
 
-        /* Status Messages */
-        #form-status {
-            text-align: center;
-            margin-top: 1rem;
-            font-weight: bold;
-            display: none; /* Hidden by default */
-        }
-        .success {
-            color: #28a745;
-        }
-        .error {
-            color: #dc3545;
-        }
-        
-        /* Footer */
-        .footer {
-            text-align: center;
-            margin-top: 2rem;
-            font-size: 0.9rem;
-            color: #aaa;
-        }
+1. **Hero** com formulário rápido (nome, telefone, tipo de projeto, ZIP)
+2. **Faixa de confiança** (experiência em big-box, orçamento grátis, preço fixo, agilidade)
+3. **Serviços** + oferta **$250 flat rate** para banheiros/closets (30–60 sq ft)
+4. **Antes & Depois** — slider arrastável com 5 projetos reais (quarto, banheiro, sala, escada, corredor)
+5. **Galeria** em slides (carrossel com autoplay)
+6. **Por que nós** + processo em 3 passos
+7. **Formulário completo de leads** — mesmas perguntas do formulário do Facebook/Instagram
+   (tipo de piso, tamanho do projeto, quando quer começar) + nome, telefone, e-mail, ZIP, observações
+8. Rodapé + barra fixa no celular (Ligar / Texto / Orçamento)
 
-    </style>
-</head>
-<body>
+## Para onde vão os leads
 
-    <div class="container">
-        <div class="header">
-            <h1>Alves Renovation</h1>
-            <p>Transform Your Space. Get a Free, No-Obligation Quote Today!</p>
-        </div>
+Os formulários enviam um `POST` para o Google Apps Script configurado em `js/main.js`
+(`LEAD_ENDPOINT` — a mesma URL que já era usada no formulário anterior). Campos enviados:
 
-        <form class="lead-form" id="leadForm">
-            <div class="form-group">
-                <label for="name">Full Name</label>
-                <input type="text" id="name" name="name" placeholder="e.g., John Doe" required>
-            </div>
-            <div class="form-group">
-                <label for="email">Email Address</label>
-                <input type="email" id="email" name="email" placeholder="e.g., john.doe@example.com" required>
-            </div>
-            <div class="form-group">
-                <label for="phone">Phone Number</label>
-                <input type="tel" id="phone" name="phone" placeholder="e.g., (555) 123-4567" required>
-            </div>
-            <button type="submit" class="submit-btn" id="submitButton">Get My Free Quote</button>
-        </form>
+`name, phone, email, zip, flooring, size, timeline, notes, source, page, submitted_at, utm_source, utm_medium, utm_campaign, utm_content, fbclid, gclid`
 
-        <p id="form-status"></p>
+Se precisar recriar o script, cole o código abaixo em **Extensões → Apps Script** de uma planilha
+e publique como **App da Web** (Executar como: você / Acesso: qualquer pessoa):
 
-        <div class="footer">
-            &copy; 2025 Alves Renovation. All Rights Reserved.
-        </div>
-    </div>
+```js
+function doPost(e) {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Leads')
+           || SpreadsheetApp.getActiveSpreadsheet().insertSheet('Leads');
+  var cols = ['submitted_at','name','phone','email','zip','flooring','size','timeline','notes',
+              'source','page','utm_source','utm_medium','utm_campaign','utm_content','fbclid','gclid'];
+  if (sheet.getLastRow() === 0) sheet.appendRow(cols);
+  sheet.appendRow(cols.map(function (c) { return e.parameter[c] || ''; }));
+  // Opcional: aviso por e-mail a cada lead
+  // MailApp.sendEmail('SEU_EMAIL', 'Novo lead: ' + e.parameter.name, JSON.stringify(e.parameter, null, 2));
+  return ContentService.createTextOutput('ok');
+}
+```
 
-    <script>
-        const form = document.getElementById('leadForm');
-        const statusMessage = document.getElementById('form-status');
-        const submitButton = document.getElementById('submitButton');
+Depois de publicar, troque a URL em `LEAD_ENDPOINT` se ela mudar.
 
-        form.addEventListener('submit', function(e) {
-            e.preventDefault(); // Prevent the default form submission
+## Rastreamento (opcional)
 
-            submitButton.disabled = true;
-            submitButton.textContent = 'Sending...';
-            
-            // Sua URL foi inserida aqui:
-            const scriptURL = 'https://script.google.com/macros/s/AKfycbzz7dKqVolkLgmv5ea4tjSviIpFymTnECYXR3lXPasLw4Bojdopa4eu1qcdbIFxvi9BPg/exec'; 
+Se você adicionar o Meta Pixel (`fbq`) ou Google Analytics (`gtag`) no `<head>`, o site já dispara
+automaticamente o evento `Lead` / `generate_lead` quando um formulário é enviado.
 
-            fetch(scriptURL, { 
-                method: 'POST', 
-                body: new FormData(form)
-            })
-            .then(response => {
-                console.log('Success!', response);
-                statusMessage.textContent = 'Thank you! We will contact you shortly.';
-                statusMessage.className = 'success';
-                statusMessage.style.display = 'block';
-                form.reset();
-            })
-            .catch(error => {
-                console.error('Error!', error.message);
-                statusMessage.textContent = 'Error! Something went wrong. Please try again.';
-                statusMessage.className = 'error';
-                statusMessage.style.display = 'block';
-            })
-            .finally(() => {
-                submitButton.disabled = false;
-                submitButton.textContent = 'Get My Free Quote';
-            });
-        });
-    </script>
+## Publicação
 
-</body>
-</html>
+Por ser um site estático, dá para publicar em GitHub Pages, Netlify, Vercel ou qualquer hospedagem:
+basta enviar a pasta inteira. Para testar localmente, abra `index.html` no navegador.
