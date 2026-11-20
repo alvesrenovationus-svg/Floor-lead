@@ -6,9 +6,10 @@ Site estático (HTML/CSS/JS puro, sem build) para a Alves Renovation.
 
 ```
 index.html          Landing page completa
-css/styles.css      Estilos (paleta da marca: azul-marinho #0B2135 / #14365C + amarelo #FFC107)
+css/styles.css      Estilos (paleta do logo: preto #0E0E10 + dourado #C9965F / #E8BE8A + branco)
 js/main.js          Slider antes/depois, carrossel, menu mobile e envio dos leads
-assets/logo.svg     Logo PROVISÓRIO — substitua pelo logo oficial (mesmo nome, ou ajuste o <img>)
+assets/logo*.png    Logo oficial (recortado em círculo) em vários tamanhos + favicon
+assets/logo-full.jpg Logo completo usado na pré-visualização de links (redes sociais)
 assets/img/*.jpg    Fotos da pasta "Muse" do Google Drive (convertidas de HEIC e otimizadas)
 ```
 
