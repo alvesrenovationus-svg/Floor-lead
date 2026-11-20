@@ -16,7 +16,7 @@ assets/img/*.jpg    Fotos da pasta "Muse" do Google Drive (convertidas de HEIC e
 ## Seções
 
 1. **Hero** — "Home renovations done right", selo Licensed & Insured e slide automático com fotos dos trabalhos
-2. **Faixa de confiança** — Licensed & Insured, orçamento grátis em casa, Philadelphia & NJ, preço fixo
+2. **Faixa de confiança** — General Contractor licenciado, Residential & Commercial, 3 States, orçamento grátis no local
 3. **Serviços principais** (cartões com foto, mesmo peso): Bathroom Remodeling, Custom Stair Capping,
    Flooring Installation, Stucco & Exterior + **Also available**: drywall, pintura, framing/trim,
    masonry, subfloor, pressure washing
@@ -32,7 +32,7 @@ assets/img/*.jpg    Fotos da pasta "Muse" do Google Drive (convertidas de HEIC e
 Os formulários enviam um `POST` para o Google Apps Script configurado em `js/main.js`
 (`LEAD_ENDPOINT` — a mesma URL que já era usada no formulário anterior). Campos enviados:
 
-`name, phone, email, zip, service, flooring, size, timeline, notes, source, page, submitted_at, utm_source, utm_medium, utm_campaign, utm_content, fbclid, gclid`
+`name, phone, email, zip, property, service, flooring, size, timeline, notes, source, page, submitted_at, utm_source, utm_medium, utm_campaign, utm_content, fbclid, gclid`
 
 Se precisar recriar o script, cole o código abaixo em **Extensões → Apps Script** de uma planilha
 e publique como **App da Web** (Executar como: você / Acesso: qualquer pessoa):
@@ -41,7 +41,7 @@ e publique como **App da Web** (Executar como: você / Acesso: qualquer pessoa):
 function doPost(e) {
   var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Leads')
            || SpreadsheetApp.getActiveSpreadsheet().insertSheet('Leads');
-  var cols = ['submitted_at','name','phone','email','zip','service','flooring','size','timeline','notes',
+  var cols = ['submitted_at','name','phone','email','zip','property','service','flooring','size','timeline','notes',
               'source','page','utm_source','utm_medium','utm_campaign','utm_content','fbclid','gclid'];
   if (sheet.getLastRow() === 0) sheet.appendRow(cols);
   sheet.appendRow(cols.map(function (c) { return e.parameter[c] || ''; }));

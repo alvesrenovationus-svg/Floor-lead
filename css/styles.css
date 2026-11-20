@@ -336,3 +336,8 @@ h1, h2, h3 { font-family: var(--display); line-height: 1.15; margin: 0 0 .5em; }
 @media (max-width: 900px) { .hero-slider { max-width: 480px; width: 100%; margin: 0 auto; } }
 @media (max-width: 600px) { .hero-slider { aspect-ratio: 4 / 4.4; } }
 @media (prefers-reduced-motion: reduce) { .hero-slide, .hero-slide img { transition: none; } }
+
+.hero__kicker { margin: 6px 0 14px; color: var(--gold-light); font-weight: 700; text-transform: uppercase; letter-spacing: .16em; font-size: .85rem; }
+.hero__kicker span { white-space: nowrap; }
+.hero__kicker i { font-style: normal; color: var(--gold); margin: 0 6px; }
+@media (max-width: 600px) { .hero__kicker { font-size: .74rem; letter-spacing: .12em; line-height: 1.8; } }
