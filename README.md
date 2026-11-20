@@ -17,7 +17,7 @@ assets/img/*.jpg    Fotos da pasta "Muse" do Google Drive (convertidas de HEIC e
 
 1. **Hero** com formulário rápido (nome, telefone, tipo de projeto, ZIP)
 2. **Faixa de confiança** (experiência em big-box, orçamento grátis, preço fixo, agilidade)
-3. **Serviços** + oferta **$250 flat rate** para banheiros/closets (30–60 sq ft)
+3. **Serviços** + chamada para orçamento grátis
 4. **Antes & Depois** — slider arrastável com 5 projetos reais (quarto, banheiro, sala, escada, corredor)
 5. **Galeria** em slides (carrossel com autoplay)
 6. **Por que nós** + processo em 3 passos

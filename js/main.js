@@ -30,7 +30,7 @@
     { key: 'bathroom', title: 'Bathroom — Full Floor Remodel', text: 'Demolition down to the subfloor, then large-format marble-look porcelain tile, toilet reset and new trim.' },
     { key: 'living', title: 'Living Area — Wood-Look Vinyl', text: 'Underlayment and protection laid out, then a warm wood-look vinyl plank floor installed wall to wall.' },
     { key: 'stairs', title: 'Staircase — New Treads & Risers', text: 'Old stairs stripped and rebuilt with wood-look treads and crisp white risers to match the new floors.' },
-    { key: 'hall', title: 'Hallway & Closet — Vinyl Plank', text: 'Bare subfloor turned into a finished space with durable, waterproof vinyl plank. Small spaces qualify for our $250 flat rate.' }
+    { key: 'hall', title: 'Hallway & Closet — Vinyl Plank', text: 'Bare subfloor turned into a finished space with durable, waterproof vinyl plank. Perfect for hallways, closets and small rooms.' }
   ];
   var ba = document.getElementById('ba');
   var range = ba.querySelector('.ba__range');
