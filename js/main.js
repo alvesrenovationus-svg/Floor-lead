@@ -24,6 +24,41 @@
     if (e.target.tagName === 'A') { nav.classList.remove('is-open'); toggle.setAttribute('aria-expanded', false); }
   });
 
+  /* ---------- Hero photo slider ---------- */
+  var hero = document.getElementById('heroSlider');
+  if (hero) {
+    var hSlides = hero.querySelectorAll('.hero-slide');
+    var hDotsWrap = hero.querySelector('.hero-slider__dots');
+    var hIdx = 0, hTimer;
+    hSlides.forEach(function (_, i) {
+      var d = document.createElement('button');
+      d.addEventListener('click', function () { hShow(i); hRestart(); });
+      hDotsWrap.appendChild(d);
+    });
+    var hDots = hDotsWrap.children;
+    function hShow(i) {
+      hIdx = (i + hSlides.length) % hSlides.length;
+      for (var k = 0; k < hSlides.length; k++) {
+        hSlides[k].classList.toggle('is-active', k === hIdx);
+        hDots[k].classList.toggle('is-active', k === hIdx);
+      }
+      var next = hSlides[(hIdx + 1) % hSlides.length].querySelector('img');
+      if (next.loading === 'lazy') next.loading = 'eager';
+    }
+    function hRestart() { clearInterval(hTimer); hTimer = setInterval(function () { hShow(hIdx + 1); }, 4500); }
+    hero.querySelector('.hero-slider__btn--prev').addEventListener('click', function () { hShow(hIdx - 1); hRestart(); });
+    hero.querySelector('.hero-slider__btn--next').addEventListener('click', function () { hShow(hIdx + 1); hRestart(); });
+    // Swipe on touch screens
+    var hx = null;
+    hero.addEventListener('touchstart', function (e) { hx = e.touches[0].clientX; }, { passive: true });
+    hero.addEventListener('touchend', function (e) {
+      if (hx === null) return;
+      var dx = e.changedTouches[0].clientX - hx; hx = null;
+      if (Math.abs(dx) > 40) { hShow(hIdx + (dx < 0 ? 1 : -1)); hRestart(); }
+    });
+    hShow(0); hRestart();
+  }
+
   /* ---------- Before / After slider ---------- */
   var projects = [
     { key: 'bathroom', title: 'Bathroom — Full Remodel', text: 'Demolition down to the subfloor, then large-format marble-look porcelain tile, toilet reset and new trim.' },

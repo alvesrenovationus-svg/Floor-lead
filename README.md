@@ -15,7 +15,7 @@ assets/img/*.jpg    Fotos da pasta "Muse" do Google Drive (convertidas de HEIC e
 
 ## Seções
 
-1. **Hero** — "Home renovations done right", selo Licensed & Insured e formulário rápido (nome, telefone, serviço, ZIP)
+1. **Hero** — "Home renovations done right", selo Licensed & Insured e slide automático com fotos dos trabalhos
 2. **Faixa de confiança** — Licensed & Insured, orçamento grátis em casa, Philadelphia & NJ, preço fixo
 3. **Serviços principais** (cartões com foto, mesmo peso): Bathroom Remodeling, Custom Stair Capping,
    Flooring Installation, Stucco & Exterior + **Also available**: drywall, pintura, framing/trim,

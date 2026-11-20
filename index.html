@@ -59,8 +59,8 @@
         <p class="lead">Bathroom remodeling, custom stair capping, flooring, stucco &amp; exterior repair and more &mdash; one trusted, licensed team for your whole home. Serving <strong>Philadelphia &amp; New Jersey</strong>.</p>
         <ul class="hero__checks">
           <li>Licensed &amp; insured</li>
-          <li>Free in-home estimate</li>
           <li>Interior &amp; exterior</li>
+          <li>Clean, precise work</li>
         </ul>
         <div class="hero__ctas">
           <a href="#quote" class="btn btn--primary btn--lg">Get My Free Quote</a>
@@ -68,35 +68,39 @@
         </div>
       </div>
 
-      <!-- Quick lead card -->
-      <div class="hero__card" id="quick">
-        <h2>Free in-home estimate</h2>
-        <p class="muted">Tell us about your project &mdash; we reply fast.</p>
-        <form class="lead-form js-lead-form" data-source="hero" novalidate>
-          <label class="sr-only" for="q-name">Full name</label>
-          <input id="q-name" name="name" type="text" placeholder="Full name" autocomplete="name" required />
-          <label class="sr-only" for="q-phone">Phone</label>
-          <input id="q-phone" name="phone" type="tel" placeholder="Phone number" autocomplete="tel" inputmode="tel" required />
-          <label class="sr-only" for="q-service">Service needed</label>
-          <select id="q-service" name="service" required>
-            <option value="">What do you need?</option>
-            <option>Bathroom remodeling</option>
-            <option>Custom stair capping</option>
-            <option>Flooring installation</option>
-            <option>Stucco &amp; exterior / masonry</option>
-            <option>Drywall &amp; spackle repair</option>
-            <option>Interior painting</option>
-            <option>Framing &amp; trim work</option>
-            <option>Pressure washing</option>
-            <option>Other / Not sure</option>
-          </select>
-          <label class="sr-only" for="q-zip">ZIP code</label>
-          <input id="q-zip" name="zip" type="text" placeholder="ZIP code" inputmode="numeric" maxlength="10" autocomplete="postal-code" required />
-          <input type="text" name="website" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
-          <button type="submit" class="btn btn--primary btn--block">Get My Free Estimate</button>
-          <p class="form-status" role="status" aria-live="polite"></p>
-        </form>
-        <p class="fineprint">We'll never share your info. No spam.</p>
+      <!-- Hero photo slider -->
+      <div class="hero-slider" id="heroSlider" aria-roledescription="carousel" aria-label="Our work">
+        <figure class="hero-slide is-active">
+          <img src="assets/img/bathroom-after.jpg" alt="Remodeled bathroom with marble-look tile" />
+          <figcaption>Bathroom Remodeling</figcaption>
+        </figure>
+        <figure class="hero-slide">
+          <img src="assets/img/gallery-stairs.jpg" alt="Staircase with custom stair capping" loading="lazy" />
+          <figcaption>Custom Stair Capping</figcaption>
+        </figure>
+        <figure class="hero-slide">
+          <img src="assets/img/exterior-stucco.jpg" alt="House exterior after stucco repair" loading="lazy" />
+          <figcaption>Stucco &amp; Exterior</figcaption>
+        </figure>
+        <figure class="hero-slide">
+          <img src="assets/img/hero-flooring.jpg" alt="Living room with new plank flooring" loading="lazy" />
+          <figcaption>Flooring Installation</figcaption>
+        </figure>
+        <figure class="hero-slide">
+          <img src="assets/img/stairs-after.jpg" alt="Stairs with new treads and white risers" loading="lazy" />
+          <figcaption>Stair Capping &amp; Trim</figcaption>
+        </figure>
+        <figure class="hero-slide">
+          <img src="assets/img/exterior-porch.jpg" alt="Porch and trim repair" loading="lazy" />
+          <figcaption>Porch, Trim &amp; Masonry</figcaption>
+        </figure>
+        <figure class="hero-slide">
+          <img src="assets/img/gallery-bath-tile.jpg" alt="Bathroom tile floor" loading="lazy" />
+          <figcaption>Bathroom Tile</figcaption>
+        </figure>
+        <button class="hero-slider__btn hero-slider__btn--prev" aria-label="Previous photo">&#10094;</button>
+        <button class="hero-slider__btn hero-slider__btn--next" aria-label="Next photo">&#10095;</button>
+        <div class="hero-slider__dots" aria-hidden="true"></div>
       </div>
     </div>
   </section>
