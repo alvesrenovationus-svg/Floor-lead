@@ -67,108 +67,118 @@
     { key: 'living', title: 'Living Area — Renovation', text: 'Underlayment and protection laid out, then a warm wood-look vinyl plank floor installed wall to wall.' },
     { key: 'hall', title: 'Hallway & Closet — Makeover', text: 'Bare subfloor turned into a finished space with durable, waterproof vinyl plank. Perfect for hallways, closets and small rooms.' }
   ];
-  var ba = document.getElementById('ba');
-  var range = ba.querySelector('.ba__range');
-  var imgBefore = ba.querySelector('.ba__before');
-  var imgAfter = ba.querySelector('.ba__after');
-  var baTitle = document.getElementById('baTitle');
-  var baText = document.getElementById('baText');
-
-  function setPos(v) {
-    v = Math.max(0, Math.min(100, +v));
-    ba.style.setProperty('--pos', v + '%');
-    range.value = v;
-    ba.classList.toggle('is-full-before', v >= 97);
-    ba.classList.toggle('is-full-after', v <= 3);
-  }
-  // Keyboard / screen readers
-  range.addEventListener('input', function () { setPos(range.value); });
-  // Drag anywhere on the image (mouse + touch), all the way to either edge
-  var dragging = false;
-  function posFromEvent(e) {
-    var r = ba.getBoundingClientRect();
-    return ((e.clientX - r.left) / r.width) * 100;
-  }
-  ba.addEventListener('pointerdown', function (e) {
-    if (e.target.closest('.ba__label')) return;
-    dragging = true; ba.classList.add('is-dragging');
-    ba.setPointerCapture(e.pointerId);
-    setPos(posFromEvent(e));
-  });
-  ba.addEventListener('pointermove', function (e) { if (dragging) setPos(posFromEvent(e)); });
-  ['pointerup', 'pointercancel'].forEach(function (ev) {
-    ba.addEventListener(ev, function () { dragging = false; ba.classList.remove('is-dragging'); });
-  });
-  // Tap "Before" / "After" to see that photo in full
-  function animateTo(target) {
-    var start = parseFloat(range.value), t0 = null;
-    function step(ts) {
-      if (!t0) t0 = ts;
-      var k = Math.min(1, (ts - t0) / 450), ease = 1 - Math.pow(1 - k, 3);
-      setPos(start + (target - start) * ease);
-      if (k < 1) requestAnimationFrame(step);
+  // Works for every .ba on the page (home page + service pages)
+  function initBA(ba) {
+    var range = ba.querySelector('.ba__range');
+    function setPos(v) {
+      v = Math.max(0, Math.min(100, +v));
+      ba.style.setProperty('--pos', v + '%');
+      range.value = v;
+      ba.classList.toggle('is-full-before', v >= 97);
+      ba.classList.toggle('is-full-after', v <= 3);
     }
-    requestAnimationFrame(step);
-  }
-  ba.querySelector('.ba__label--before').addEventListener('click', function () { animateTo(100); });
-  ba.querySelector('.ba__label--after').addEventListener('click', function () { animateTo(0); });
-  setPos(50);
-
-  document.querySelectorAll('.ba-tab').forEach(function (tab) {
-    tab.addEventListener('click', function () {
-      document.querySelectorAll('.ba-tab').forEach(function (t) { t.classList.remove('is-active'); t.setAttribute('aria-selected', 'false'); });
-      tab.classList.add('is-active'); tab.setAttribute('aria-selected', 'true');
-      var p = projects[+tab.dataset.ba];
-      ba.classList.add('is-fading');
-      setTimeout(function () {
-        imgBefore.src = 'assets/img/' + p.key + '-before.jpg';
-        imgAfter.src = 'assets/img/' + p.key + '-after.jpg';
-        imgBefore.alt = 'Before: ' + p.title;
-        imgAfter.alt = 'After: ' + p.title;
-        baTitle.textContent = p.title;
-        baText.textContent = p.text;
-        setPos(50);
-        ba.classList.remove('is-fading');
-      }, 220);
+    // Keyboard / screen readers
+    range.addEventListener('input', function () { setPos(range.value); });
+    // Drag anywhere on the image (mouse + touch), all the way to either edge
+    var dragging = false;
+    function posFromEvent(e) {
+      var r = ba.getBoundingClientRect();
+      return ((e.clientX - r.left) / r.width) * 100;
+    }
+    ba.addEventListener('pointerdown', function (e) {
+      if (e.target.closest('.ba__label')) return;
+      dragging = true; ba.classList.add('is-dragging');
+      ba.setPointerCapture(e.pointerId);
+      setPos(posFromEvent(e));
     });
-  });
-  // Preload before/after images
-  projects.forEach(function (p) { ['before', 'after'].forEach(function (s) { new Image().src = 'assets/img/' + p.key + '-' + s + '.jpg'; }); });
+    ba.addEventListener('pointermove', function (e) { if (dragging) setPos(posFromEvent(e)); });
+    ['pointerup', 'pointercancel'].forEach(function (ev) {
+      ba.addEventListener(ev, function () { dragging = false; ba.classList.remove('is-dragging'); });
+    });
+    // Tap "Before" / "After" to see that photo in full
+    function animateTo(target) {
+      var start = parseFloat(range.value), t0 = null;
+      function step(ts) {
+        if (!t0) t0 = ts;
+        var k = Math.min(1, (ts - t0) / 450), ease = 1 - Math.pow(1 - k, 3);
+        setPos(start + (target - start) * ease);
+        if (k < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    }
+    ba.querySelector('.ba__label--before').addEventListener('click', function () { animateTo(100); });
+    ba.querySelector('.ba__label--after').addEventListener('click', function () { animateTo(0); });
+    setPos(50);
+    ba.setPos = setPos;
+  }
+  document.querySelectorAll('.ba').forEach(initBA);
+
+  // Home page: project tabs switch the main comparison
+  var ba = document.getElementById('ba');
+  var baTabs = document.querySelectorAll('.ba-tab');
+  if (ba && baTabs.length) {
+    var imgBefore = ba.querySelector('.ba__before');
+    var imgAfter = ba.querySelector('.ba__after');
+    var baTitle = document.getElementById('baTitle');
+    var baText = document.getElementById('baText');
+    baTabs.forEach(function (tab) {
+      tab.addEventListener('click', function () {
+        baTabs.forEach(function (t) { t.classList.remove('is-active'); t.setAttribute('aria-selected', 'false'); });
+        tab.classList.add('is-active'); tab.setAttribute('aria-selected', 'true');
+        var p = projects[+tab.dataset.ba];
+        ba.classList.add('is-fading');
+        setTimeout(function () {
+          imgBefore.src = 'assets/img/' + p.key + '-before.jpg';
+          imgAfter.src = 'assets/img/' + p.key + '-after.jpg';
+          imgBefore.alt = 'Before: ' + p.title;
+          imgAfter.alt = 'After: ' + p.title;
+          baTitle.textContent = p.title;
+          baText.textContent = p.text;
+          ba.setPos(50);
+          ba.classList.remove('is-fading');
+        }, 220);
+      });
+    });
+    // Preload before/after images
+    projects.forEach(function (p) { ['before', 'after'].forEach(function (s) { new Image().src = 'assets/img/' + p.key + '-' + s + '.jpg'; }); });
+  }
 
   /* ---------- Gallery carousel ---------- */
   var carousel = document.getElementById('carousel');
-  var track = carousel.querySelector('.carousel__track');
-  var slides = Array.prototype.slice.call(track.children);
-  var dotsWrap = carousel.querySelector('.carousel__dots');
-  slides.forEach(function (_, i) {
-    var d = document.createElement('button');
-    d.addEventListener('click', function () { goTo(i); });
-    dotsWrap.appendChild(d);
-  });
-  var dots = dotsWrap.children;
-  function stepWidth() { return slides[1].offsetLeft - slides[0].offsetLeft; }
-  function current() { return Math.round(track.scrollLeft / stepWidth()); }
-  function goTo(i) {
-    var max = track.scrollWidth - track.clientWidth;
-    track.scrollTo({ left: Math.min(i * stepWidth(), max) });
+  if (carousel) {
+    var track = carousel.querySelector('.carousel__track');
+    var slides = Array.prototype.slice.call(track.children);
+    var dotsWrap = carousel.querySelector('.carousel__dots');
+    slides.forEach(function (_, i) {
+      var d = document.createElement('button');
+      d.addEventListener('click', function () { goTo(i); });
+      dotsWrap.appendChild(d);
+    });
+    var dots = dotsWrap.children;
+    var stepWidth = function () { return slides[1].offsetLeft - slides[0].offsetLeft; };
+    var current = function () { return Math.round(track.scrollLeft / stepWidth()); };
+    var goTo = function (i) {
+      var max = track.scrollWidth - track.clientWidth;
+      track.scrollTo({ left: Math.min(i * stepWidth(), max) });
+    };
+    var updateDots = function () {
+      var c = current();
+      var atEnd = track.scrollLeft >= track.scrollWidth - track.clientWidth - 4;
+      for (var i = 0; i < dots.length; i++) dots[i].classList.toggle('is-active', atEnd ? i === dots.length - 1 : i === c);
+    };
+    track.addEventListener('scroll', function () { window.requestAnimationFrame(updateDots); });
+    carousel.querySelector('.carousel__btn--prev').addEventListener('click', function () { goTo(Math.max(0, current() - 1)); });
+    carousel.querySelector('.carousel__btn--next').addEventListener('click', function () {
+      var atEnd = track.scrollLeft >= track.scrollWidth - track.clientWidth - 4;
+      goTo(atEnd ? 0 : current() + 1);
+    });
+    updateDots();
+    // Autoplay (pauses on hover/touch)
+    var autoplay = setInterval(function () { carousel.querySelector('.carousel__btn--next').click(); }, 4500);
+    ['mouseenter', 'touchstart', 'focusin'].forEach(function (ev) {
+      carousel.addEventListener(ev, function () { clearInterval(autoplay); }, { passive: true, once: true });
+    });
   }
-  function updateDots() {
-    var c = current();
-    var atEnd = track.scrollLeft >= track.scrollWidth - track.clientWidth - 4;
-    for (var i = 0; i < dots.length; i++) dots[i].classList.toggle('is-active', atEnd ? i === dots.length - 1 : i === c);
-  }
-  track.addEventListener('scroll', function () { window.requestAnimationFrame(updateDots); });
-  carousel.querySelector('.carousel__btn--prev').addEventListener('click', function () { goTo(Math.max(0, current() - 1)); });
-  carousel.querySelector('.carousel__btn--next').addEventListener('click', function () {
-    var atEnd = track.scrollLeft >= track.scrollWidth - track.clientWidth - 4;
-    goTo(atEnd ? 0 : current() + 1);
-  });
-  updateDots();
-  // Autoplay (pauses on hover/touch)
-  var autoplay = setInterval(function () { carousel.querySelector('.carousel__btn--next').click(); }, 4500);
-  ['mouseenter', 'touchstart', 'focusin'].forEach(function (ev) {
-    carousel.addEventListener(ev, function () { clearInterval(autoplay); }, { passive: true, once: true });
-  });
 
   /* ---------- Show flooring-type question only for flooring ---------- */
   var flooringField = document.getElementById('flooringField');
@@ -188,7 +198,7 @@
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add('is-visible'); io.unobserve(en.target); } });
     }, { threshold: 0.12 });
-    document.querySelectorAll('.service, .offer, .ba-stage, .slide, .why__photo, .why__copy, .quote__form, .quote__copy').forEach(function (el) {
+    document.querySelectorAll('.service, .offer, .ba-stage, .slide, .why__photo, .why__copy, .quote__form, .quote__copy, .sp-block, .sp-gallery figure, .sp-ba').forEach(function (el) {
       el.classList.add('reveal'); io.observe(el);
     });
   }

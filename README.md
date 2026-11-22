@@ -5,7 +5,11 @@ Site estático (HTML/CSS/JS puro, sem build) para a Alves Renovation.
 ## Estrutura
 
 ```
-index.html          Landing page completa
+index.html                 Página inicial (landing page)
+bathroom-remodeling.html   Página do serviço: Bathroom Remodeling
+stair-capping.html         Página do serviço: Custom Stair Capping
+flooring.html              Página do serviço: Flooring Installation
+stucco-exterior.html       Página do serviço: Stucco & Exterior
 css/styles.css      Estilos (paleta do logo: preto #0E0E10 + dourado #C9965F / #E8BE8A + branco)
 js/main.js          Slider antes/depois, carrossel, menu mobile e envio dos leads
 assets/logo*.png    Logo oficial (recortado em círculo) em vários tamanhos + favicon
@@ -26,6 +30,15 @@ assets/img/*.jpg    Fotos da pasta "Muse" do Google Drive (convertidas de HEIC e
 7. **Formulário completo de leads** — serviço desejado, tipo de piso (só aparece se escolher Flooring),
    tamanho do projeto, quando quer começar + nome, telefone, e-mail, ZIP, observações
 8. Rodapé (logo, contato, Instagram, área atendida) + barra fixa no celular (Ligar / Texto / Orçamento)
+
+## Páginas de serviço
+
+Cada cartão de "Our Main Services" na página inicial abre a página do serviço. Todas seguem o mesmo modelo:
+topo com foto, "What's included", (Flooring: tipos de piso), Antes & Depois arrastável, galeria de fotos,
+Quality • Precision • Trust, formulário de orçamento (o serviço já vai preenchido no lead) e links para os outros serviços.
+
+Para adicionar fotos: coloque o arquivo em `assets/img/` e adicione um `<figure>` na seção `sp-gallery` da página.
+Para um novo Antes & Depois: salve `nome-before.jpg` e `nome-after.jpg` em `assets/img/` e copie um bloco `sp-ba`.
 
 ## Para onde vão os leads
 
