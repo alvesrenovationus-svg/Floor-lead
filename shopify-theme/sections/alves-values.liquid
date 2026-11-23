@@ -1,0 +1,13 @@
+<section class="section section--alt">
+  <div class="container">
+      <div class="values">
+        {%- for block in section.blocks -%}{%- if block.type == 'value' -%}
+        <article class="value" {{ block.shopify_attributes }}><div class="value__icon">{%- case block.settings.icon -%}{%- when 'diamond' -%}&#9671;{%- when 'check' -%}&#10003;{%- else -%}&#9733;{%- endcase -%}</div><h3>{{ block.settings.title }}</h3><p>{{ block.settings.text }}</p></article>
+        {%- endif -%}{%- endfor -%}
+      </div>
+  </div>
+</section>
+
+{% schema %}
+{"name": "Alves values", "settings": [], "blocks": [{"type": "value", "name": "Value card", "settings": [{"type": "select", "id": "icon", "label": "Icon", "default": "star", "options": [{"value": "star", "label": "Star"}, {"value": "diamond", "label": "Diamond"}, {"value": "check", "label": "Check"}]}, {"type": "text", "id": "title", "label": "Title", "default": "Quality"}, {"type": "text", "id": "text", "label": "Text"}]}], "max_blocks": 3, "presets": [{"name": "Alves values"}]}
+{% endschema %}

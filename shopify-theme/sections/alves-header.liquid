@@ -1,0 +1,27 @@
+<header class="header" id="top">
+  <div class="container header__inner">
+    <a href="{{ routes.root_url }}" class="brand" aria-label="Alves Renovation home">
+      {%- assign logo = section.settings.logo | default: images['alves-logo-sm.png'] -%}
+      {%- if logo %}<img src="{{ logo | image_url: width: 160 }}" alt="Alves Renovation logo" class="brand__logo" width="56" height="56" />{% endif %}
+      <span class="brand__name"><strong>{{ section.settings.brand_top }}</strong><small>{{ section.settings.brand_bottom }}</small></span>
+    </a>
+    <nav class="nav" id="nav">
+      {%- for block in section.blocks -%}
+        <a href="{{ block.settings.link }}" {{ block.shopify_attributes }}>{{ block.settings.label }}</a>
+      {%- endfor -%}
+      <a href="#quote" class="nav__cta-mobile">{{ section.settings.cta_label }}</a>
+    </nav>
+    <div class="header__actions">
+      <a href="tel:{{ section.settings.phone }}" class="btn btn--ghost btn--sm header__phone">
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1l-2.3 2.2z"/></svg>
+        {{ section.settings.phone_display }}
+      </a>
+      <a href="#quote" class="btn btn--primary btn--sm">{{ section.settings.cta_label }}</a>
+      <button class="menu-toggle" id="menuToggle" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+{% schema %}
+{"name": "Alves header", "settings": [{"type": "image_picker", "id": "logo", "label": "Logo"}, {"type": "text", "id": "brand_top", "label": "Brand name (top)", "default": "Alves"}, {"type": "text", "id": "brand_bottom", "label": "Brand name (bottom)", "default": "Renovation"}, {"type": "text", "id": "phone", "label": "Phone (for calling, e.g. +12676160381)", "default": "+12676160381"}, {"type": "text", "id": "phone_display", "label": "Phone (as shown)", "default": "(267) 616-0381"}, {"type": "text", "id": "cta_label", "label": "Quote button label", "default": "Free Quote"}], "blocks": [{"type": "link", "name": "Menu link", "settings": [{"type": "text", "id": "label", "label": "Label", "default": "Link"}, {"type": "text", "id": "link", "label": "Link (e.g. /#services)", "default": "/"}]}], "max_blocks": 8}
+{% endschema %}

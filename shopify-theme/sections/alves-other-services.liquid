@@ -1,0 +1,17 @@
+<section class="section">
+  <div class="container">
+    <header class="section__head">
+      <span class="eyebrow">{{ section.settings.eyebrow }}</span>
+      <h2>{{ section.settings.heading }}</h2>
+    </header>
+    <div class="other-services">
+      {%- for block in section.blocks -%}
+        <a class="other-service" href="{{ block.settings.link }}" {{ block.shopify_attributes }}>{%- if block.settings.image -%}<img src="{{ block.settings.image | image_url: width: 800 }}" alt="{{ block.settings.title | strip_html | escape }}" loading="lazy" />{%- endif -%}<span>{{ block.settings.title }} <b aria-hidden="true">&rarr;</b></span></a>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{"name": "Alves other services", "settings": [{"type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "More from Alves Renovation"}, {"type": "text", "id": "heading", "label": "Heading", "default": "Other Services"}], "blocks": [{"type": "card", "name": "Service link", "settings": [{"type": "image_picker", "id": "image", "label": "Photo"}, {"type": "text", "id": "title", "label": "Title"}, {"type": "text", "id": "link", "label": "Link", "default": "/"}]}], "max_blocks": 6, "presets": [{"name": "Alves other services"}]}
+{% endschema %}

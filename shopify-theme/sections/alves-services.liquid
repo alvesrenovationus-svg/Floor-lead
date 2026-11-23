@@ -1,0 +1,45 @@
+<section class="section" id="services">
+  <div class="container">
+    <header class="section__head">
+      <span class="eyebrow">{{ section.settings.eyebrow }}</span>
+      <h2>{{ section.settings.heading }}</h2>
+      <p>{{ section.settings.subheading }}</p>
+    </header>
+    <div class="main-services">
+      {%- for block in section.blocks -%}{%- if block.type == 'service' -%}
+      <article class="main-service" {{ block.shopify_attributes }}>
+        <div class="main-service__img">{%- if block.settings.image -%}<img src="{{ block.settings.image | image_url: width: 1000 }}" alt="{{ block.settings.title | strip_html | escape }}" loading="lazy" />{%- endif -%}</div>
+        <div class="main-service__body">
+          <h3>{% if block.settings.link != blank %}<a href="{{ block.settings.link }}">{{ block.settings.title }}</a>{% else %}{{ block.settings.title }}{% endif %}</h3>
+          <p>{{ block.settings.text }}</p>
+          {%- assign items = block.settings.items | newline_to_br | split: '<br />' -%}
+          <ul>{%- for i in items -%}{%- assign is = i | strip -%}{%- if is != blank -%}<li>{{ is }}</li>{%- endif -%}{%- endfor -%}</ul>
+          {%- if block.settings.link != blank %}<a class="main-service__link" href="{{ block.settings.link }}" aria-label="Learn more about {{ block.settings.title | escape }}">Learn more <b aria-hidden="true">&rarr;</b></a>{% endif %}
+        </div>
+      </article>
+      {%- endif -%}{%- endfor -%}
+    </div>
+
+    <h3 class="services__group">{{ section.settings.also_label }}</h3>
+    <div class="mini-services">
+      {%- for block in section.blocks -%}{%- if block.type == 'mini' -%}
+        <a class="mini-service" href="{{ block.settings.link | default: '#quote' }}" {{ block.shopify_attributes }}><svg viewBox="0 0 24 24" aria-hidden="true">{%- case block.settings.icon -%}{%- when 'drywall' -%}<path d="M3 4h18v6H3zM3 14h8v6H3zM13 14h8v6h-8z"/>{%- when 'painting' -%}<path d="M4 3h14v6H4zM18 6h2v6h-8v3h-2v6H8v-6h2v-5h8z"/>{%- when 'framing' -%}<path d="M4 3h3v18H4zM17 3h3v18h-3zM7 5h10v3H7zM7 16h10v3H7z"/>{%- when 'masonry' -%}<path d="M2 5h9v4H2zM13 5h9v4h-9zM2 11h5v4H2zM9 11h6v4H9zM17 11h5v4h-5zM2 17h9v4H2zM13 17h9v4h-9z"/>{%- when 'subfloor' -%}<path d="M2 17h20v4H2zM4 13h16v2H4zM7 9h10v2H7z"/>{%- when 'washing' -%}<path d="M3 10h9l2-3h3v3h4v3h-4v3h-3l-2-3H3z"/>{%- endcase -%}</svg><span>{{ block.settings.title }}</span><b class="mini-service__arrow" aria-hidden="true">&rarr;</b></a>
+      {%- endif -%}{%- endfor -%}
+    </div>
+
+    {%- if section.settings.offer_title != blank -%}
+    <div class="offer">
+      <div>
+        <span class="offer__tag">{{ section.settings.offer_tag }}</span>
+        <h3>{{ section.settings.offer_title }} <span class="accent">{{ section.settings.offer_accent }}</span></h3>
+        <p>{{ section.settings.offer_text }}</p>
+      </div>
+      <a href="{{ section.settings.offer_btn_link }}" class="btn btn--primary btn--lg">{{ section.settings.offer_btn_label }}</a>
+    </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{"name": "Alves services", "settings": [{"type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "What we do"}, {"type": "text", "id": "heading", "label": "Heading", "default": "Our Main Services"}, {"type": "text", "id": "subheading", "label": "Subheading"}, {"type": "text", "id": "also_label", "label": "\"Also available\" label", "default": "Also available"}, {"type": "text", "id": "offer_tag", "label": "Offer tag", "default": "Free estimate"}, {"type": "text", "id": "offer_title", "label": "Offer title", "default": "Free on-site estimate."}, {"type": "text", "id": "offer_accent", "label": "Offer title (gold)", "default": "Licensed & insured."}, {"type": "textarea", "id": "offer_text", "label": "Offer text"}, {"type": "text", "id": "offer_btn_label", "label": "Offer button label", "default": "Get My Free Estimate"}, {"type": "text", "id": "offer_btn_link", "label": "Offer button link", "default": "#quote"}], "blocks": [{"type": "service", "name": "Main service", "settings": [{"type": "image_picker", "id": "image", "label": "Photo"}, {"type": "text", "id": "title", "label": "Title", "default": "Service"}, {"type": "text", "id": "text", "label": "Text"}, {"type": "textarea", "id": "items", "label": "Bullet points (one per line)"}, {"type": "text", "id": "link", "label": "Service page link"}]}, {"type": "mini", "name": "Other service", "settings": [{"type": "text", "id": "title", "label": "Title", "default": "Service"}, {"type": "text", "id": "link", "label": "Page link"}, {"type": "select", "id": "icon", "label": "Icon", "default": "drywall", "options": [{"value": "drywall", "label": "Drywall"}, {"value": "painting", "label": "Painting"}, {"value": "framing", "label": "Framing"}, {"value": "masonry", "label": "Masonry"}, {"value": "subfloor", "label": "Subfloor"}, {"value": "washing", "label": "Washing"}]}]}], "presets": [{"name": "Alves services"}]}
+{% endschema %}

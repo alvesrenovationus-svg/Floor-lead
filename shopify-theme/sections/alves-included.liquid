@@ -1,0 +1,17 @@
+<section class="section">
+  <div class="container sp-block">
+    <div class="sp-block__copy">
+      <span class="eyebrow">{{ section.settings.eyebrow }}</span>
+      <h2>{{ section.settings.heading }}</h2>
+      <p>{{ section.settings.text }}</p>
+      {%- assign items = section.settings.items | newline_to_br | split: '<br />' -%}
+      <ul class="checklist">{%- for i in items -%}{%- assign is = i | strip -%}{%- if is != blank -%}<li>{{ is }}</li>{%- endif -%}{%- endfor -%}</ul>
+      <a href="#quote" class="btn btn--primary">{{ section.settings.btn_label }}</a>
+    </div>
+    <div class="sp-block__img">{%- if section.settings.image -%}<img src="{{ section.settings.image | image_url: width: 1000 }}" alt="{{ section.settings.heading | strip_html | escape }}" loading="lazy" />{%- endif -%}</div>
+  </div>
+</section>
+
+{% schema %}
+{"name": "Alves what's included", "settings": [{"type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "What's included"}, {"type": "text", "id": "heading", "label": "Heading"}, {"type": "textarea", "id": "text", "label": "Text"}, {"type": "textarea", "id": "items", "label": "Checklist (one per line)"}, {"type": "image_picker", "id": "image", "label": "Photo"}, {"type": "text", "id": "btn_label", "label": "Button label", "default": "Get a Free Estimate"}], "presets": [{"name": "Alves what's included"}]}
+{% endschema %}

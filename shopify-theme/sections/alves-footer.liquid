@@ -1,0 +1,36 @@
+<footer class="footer">
+  <div class="container footer__inner">
+    <a href="{{ routes.root_url }}" aria-label="Home">
+      {%- assign logo = section.settings.logo | default: images['alves-logo.png'] -%}
+      {%- if logo %}<img src="{{ logo | image_url: width: 400 }}" alt="Alves Renovation logo" class="footer__logo" width="150" height="150" loading="lazy" />{% endif %}
+    </a>
+    <p class="footer__tagline">{{ section.settings.tagline }}</p>
+    {%- if section.blocks.size > 0 -%}
+    <p class="footer__links">
+      {%- for block in section.blocks -%}<a href="{{ block.settings.link }}" {{ block.shopify_attributes }}>{{ block.settings.label }}</a>{% unless forloop.last %} &middot; {% endunless %}{%- endfor -%}
+    </p>
+    {%- endif -%}
+    <p>{{ section.settings.line }}</p>
+    <p class="footer__contact"><a href="tel:{{ section.settings.phone }}">{{ section.settings.phone_display }}</a> &middot; <a href="mailto:{{ section.settings.email }}">{{ section.settings.email }}</a>{% if section.settings.instagram != blank %} &middot; <a href="{{ section.settings.instagram }}" target="_blank" rel="noopener">{{ section.settings.instagram_label }}</a>{% endif %}</p>
+    <p class="footer__copy">&copy; <span id="year">{{ 'now' | date: '%Y' }}</span> Alves Renovation. All rights reserved.</p>
+  </div>
+</footer>
+
+<div class="sticky-cta">
+  <a href="tel:{{ section.settings.phone }}" class="btn btn--ghost">Call</a>
+  <a href="sms:{{ section.settings.phone }}" class="btn btn--ghost">Text</a>
+  <a href="#quote" class="btn btn--primary">Free Quote</a>
+</div>
+
+<div class="modal" id="thanks" hidden>
+  <div class="modal__box" role="dialog" aria-modal="true" aria-labelledby="thanksTitle">
+    <div class="modal__check">&#10003;</div>
+    <h3 id="thanksTitle">{{ section.settings.thanks_title }}</h3>
+    <p>{{ section.settings.thanks_text }} <a href="tel:{{ section.settings.phone }}">{{ section.settings.phone_display }}</a>.</p>
+    <button class="btn btn--primary" data-close>Close</button>
+  </div>
+</div>
+
+{% schema %}
+{"name": "Alves footer", "settings": [{"type": "image_picker", "id": "logo", "label": "Logo"}, {"type": "text", "id": "tagline", "label": "Tagline", "default": "Quality • Precision • Trust"}, {"type": "text", "id": "line", "label": "Company line", "default": "Licensed & Insured General Contractor • Residential & Commercial • Serving Pennsylvania, New Jersey & Delaware"}, {"type": "text", "id": "phone", "label": "Phone (for calling)", "default": "+12676160381"}, {"type": "text", "id": "phone_display", "label": "Phone (as shown)", "default": "(267) 616-0381"}, {"type": "text", "id": "email", "label": "Email", "default": "alvesrenovationus@gmail.com"}, {"type": "url", "id": "instagram", "label": "Instagram link", "default": "https://www.instagram.com/alves_renovationllc/"}, {"type": "text", "id": "instagram_label", "label": "Instagram label", "default": "@alves_renovationllc"}, {"type": "text", "id": "thanks_title", "label": "Thank-you title", "default": "Thank you!"}, {"type": "text", "id": "thanks_text", "label": "Thank-you message", "default": "We received your request and will contact you shortly. Need it faster? Call or text"}], "blocks": [{"type": "link", "name": "Footer link", "settings": [{"type": "text", "id": "label", "label": "Label", "default": "Link"}, {"type": "text", "id": "link", "label": "Link", "default": "/"}]}]}
+{% endschema %}

@@ -1,0 +1,73 @@
+<section class="section section--dark" id="quote">
+  <div class="container quote">
+    <div class="quote__copy">
+      <span class="eyebrow">{{ section.settings.eyebrow }}</span>
+      <h2>{{ section.settings.heading }}</h2>
+      <p>{{ section.settings.text }}</p>
+      <ul class="contact-list">
+        <li><a href="tel:{{ section.settings.phone }}"><span class="contact-list__icon">&#9742;</span> Call {{ section.settings.phone_display }}</a></li>
+        <li><a href="sms:{{ section.settings.phone }}"><span class="contact-list__icon">&#9993;</span> Text us</a></li>
+        {%- if section.settings.email != blank %}<li><a href="mailto:{{ section.settings.email }}"><span class="contact-list__icon">&#9993;</span> {{ section.settings.email }}</a></li>{% endif %}
+        {%- if section.settings.instagram != blank %}<li><a href="{{ section.settings.instagram }}" target="_blank" rel="noopener"><span class="contact-list__icon">@</span> {{ section.settings.instagram_label }}</a></li>{% endif %}
+      </ul>
+      <p class="service-area">&#9906; {{ section.settings.service_area }}</p>
+    </div>
+
+    {%- form 'contact', id: 'QuoteForm', class: 'quote__form lead-form js-lead-form', novalidate: 'novalidate' -%}
+      {%- if form.posted_successfully? -%}<p class="form-success" role="status">{{ section.settings.success_text }}</p>{%- endif -%}
+      {%- if form.errors -%}<div class="form-errors" role="alert">{{ form.errors | default_errors }}</div>{%- endif -%}
+      <input type="hidden" name="contact[Source]" value="{{ request.path }}" />
+      {%- if section.settings.fixed_service != blank -%}<input type="hidden" name="contact[Service]" value="{{ section.settings.fixed_service | escape }}" />{%- endif -%}
+      <div class="field-row">
+        <div class="field"><label for="f-name">Full name *</label><input id="f-name" name="contact[name]" type="text" autocomplete="name" required /></div>
+        <div class="field"><label for="f-phone">Phone *</label><input id="f-phone" name="contact[phone]" type="tel" inputmode="tel" autocomplete="tel" required /></div>
+      </div>
+      <div class="field-row">
+        <div class="field"><label for="f-email">Email *</label><input id="f-email" name="contact[email]" type="email" autocomplete="email" required /></div>
+        <div class="field"><label for="f-zip">ZIP code *</label><input id="f-zip" name="contact[ZIP]" type="text" inputmode="numeric" maxlength="10" autocomplete="postal-code" required /></div>
+      </div>
+      <fieldset class="field">
+        <legend>Property type</legend>
+        {%- assign opts = section.settings.property_options | newline_to_br | split: '<br />' -%}
+          <div class="chips">{%- for o in opts -%}{%- assign os = o | strip -%}{%- if os != blank -%}<label class="chip"><input type="radio" name="contact[Property type]" value="{{ os | escape }}" /><span>{{ os }}</span></label>{%- endif -%}{%- endfor -%}</div>
+      </fieldset>
+      {%- if section.settings.fixed_service == blank -%}
+      <fieldset class="field">
+        <legend>What do you need? *</legend>
+        {%- assign opts = section.settings.service_options | newline_to_br | split: '<br />' -%}
+          <div class="chips">{%- for o in opts -%}{%- assign os = o | strip -%}{%- if os != blank -%}<label class="chip"><input type="radio" name="contact[Service]" value="{{ os | escape }}" required /><span>{{ os }}</span></label>{%- endif -%}{%- endfor -%}</div>
+      </fieldset>
+      {%- endif -%}
+      {%- if section.settings.show_flooring -%}
+      <fieldset class="field" id="flooringField">
+        <legend>Flooring type</legend>
+        {%- assign opts = section.settings.flooring_options | newline_to_br | split: '<br />' -%}
+          <div class="chips">{%- for o in opts -%}{%- assign os = o | strip -%}{%- if os != blank -%}<label class="chip"><input type="radio" name="contact[Flooring type]" value="{{ os | escape }}" /><span>{{ os }}</span></label>{%- endif -%}{%- endfor -%}</div>
+      </fieldset>
+      {%- endif -%}
+      {%- if section.settings.show_size_time -%}
+      <fieldset class="field">
+        <legend>How big is the project?</legend>
+        {%- assign opts = section.settings.size_options | newline_to_br | split: '<br />' -%}
+          <div class="chips">{%- for o in opts -%}{%- assign os = o | strip -%}{%- if os != blank -%}<label class="chip"><input type="radio" name="contact[Project size]" value="{{ os | escape }}" /><span>{{ os }}</span></label>{%- endif -%}{%- endfor -%}</div>
+      </fieldset>
+      <fieldset class="field">
+        <legend>When are you looking to start?</legend>
+        {%- assign opts = section.settings.timeline_options | newline_to_br | split: '<br />' -%}
+          <div class="chips">{%- for o in opts -%}{%- assign os = o | strip -%}{%- if os != blank -%}<label class="chip"><input type="radio" name="contact[Timeline]" value="{{ os | escape }}" /><span>{{ os }}</span></label>{%- endif -%}{%- endfor -%}</div>
+      </fieldset>
+      {%- endif -%}
+      <div class="field">
+        <label for="f-notes">{{ section.settings.notes_label }}</label>
+        <textarea id="f-notes" name="contact[body]" rows="3" placeholder="{{ section.settings.notes_placeholder | escape }}"></textarea>
+      </div>
+      <button type="submit" class="btn btn--primary btn--lg btn--block">{{ section.settings.button_label }}</button>
+      <p class="form-status" role="status" aria-live="polite"></p>
+      <p class="fineprint">{{ section.settings.fineprint }}</p>
+    {%- endform -%}
+  </div>
+</section>
+
+{% schema %}
+{"name": "Alves quote form", "settings": [{"type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Free on-site estimate"}, {"type": "text", "id": "heading", "label": "Heading", "default": "Let's talk about your project"}, {"type": "textarea", "id": "text", "label": "Text", "default": "Answer a few quick questions and we'll get back to you with a free, no-obligation quote — usually the same day."}, {"type": "text", "id": "phone", "label": "Phone (for calling)", "default": "+12676160381"}, {"type": "text", "id": "phone_display", "label": "Phone (as shown)", "default": "(267) 616-0381"}, {"type": "text", "id": "email", "label": "Email", "default": "alvesrenovationus@gmail.com"}, {"type": "url", "id": "instagram", "label": "Instagram link", "default": "https://www.instagram.com/alves_renovationllc/"}, {"type": "text", "id": "instagram_label", "label": "Instagram label", "default": "@alves_renovationllc"}, {"type": "text", "id": "service_area", "label": "Service area line", "default": "Serving PA, NJ & DE • Residential & Commercial • Licensed & Insured General Contractor"}, {"type": "text", "id": "fixed_service", "label": "Fixed service (service pages — leave blank to let visitors choose)"}, {"type": "textarea", "id": "service_options", "label": "Service options (one per line)", "default": "Bathroom remodeling\nCustom stair capping\nFlooring installation\nStucco & exterior\nDrywall & painting\nFraming & trim\nPressure washing\nOther"}, {"type": "textarea", "id": "property_options", "label": "Property type options", "default": "Residential\nCommercial\nRental / Investment"}, {"type": "checkbox", "id": "show_flooring", "label": "Show flooring type question", "default": true}, {"type": "textarea", "id": "flooring_options", "label": "Flooring type options", "default": "Vinyl / LVP\nLaminate\nHardwood\nTile\nNot sure"}, {"type": "checkbox", "id": "show_size_time", "label": "Show size and timeline questions", "default": true}, {"type": "textarea", "id": "size_options", "label": "Project size options", "default": "Small (1 area)\n1 room\n2-3 areas\nWhole property"}, {"type": "textarea", "id": "timeline_options", "label": "Timeline options", "default": "ASAP\nThis month\n1-2 months\nJust researching"}, {"type": "text", "id": "notes_label", "label": "Notes label", "default": "Anything else we should know?"}, {"type": "text", "id": "notes_placeholder", "label": "Notes placeholder", "default": "Approx. size, current condition, number of stairs, preferred dates..."}, {"type": "text", "id": "button_label", "label": "Button label", "default": "Send & Get My Free Estimate"}, {"type": "text", "id": "success_text", "label": "Success message", "default": "Thank you! We received your request and will contact you shortly."}, {"type": "text", "id": "fineprint", "label": "Fine print", "default": "By submitting, you agree to be contacted by Alves Renovation about your project."}], "presets": [{"name": "Alves quote form"}]}
+{% endschema %}
