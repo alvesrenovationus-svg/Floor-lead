@@ -71,6 +71,21 @@ Depois de publicar, troque a URL em `LEAD_ENDPOINT` se ela mudar.
 Se você adicionar o Meta Pixel (`fbq`) ou Google Analytics (`gtag`) no `<head>`, o site já dispara
 automaticamente o evento `Lead` / `generate_lead` quando um formulário é enviado.
 
+## Domínio: alvesrenovations.com
+
+O domínio está registrado na Shopify (loja sem produtos). Os links internos, a imagem de compartilhamento,
+`sitemap.xml` e `robots.txt` já usam https://alvesrenovations.com.
+
+1. **Shopify → Configurações → Domínios → alvesrenovations.com → Configurações de domínio → Editar configurações de DNS**
+   - Registro **A** `@` → `185.199.108.153` (no lugar do IP da Shopify)
+   - Registro **CNAME** `www` → `alvesrenovationus-svg.github.io` (no lugar de `shops.myshopify.com`)
+2. **GitHub → Settings → Pages**: Source = branch `main` / root. Em *Custom domain* coloque `alvesrenovations.com`,
+   salve e, quando liberar, marque **Enforce HTTPS**. (O GitHub cria o arquivo `CNAME` sozinho.)
+3. Aguarde de minutos a algumas horas até o DNS propagar.
+
+Importante: o domínio foi comprado pela Shopify. Antes de cancelar o plano da Shopify, transfira o domínio
+para outro registrador (Cloudflare, Namecheap, Porkbun), senão ele pode ser perdido.
+
 ## Publicação
 
 Por ser um site estático, dá para publicar em GitHub Pages, Netlify, Vercel ou qualquer hospedagem:
