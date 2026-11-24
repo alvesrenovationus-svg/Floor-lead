@@ -428,3 +428,12 @@ a.mini-service{text-decoration: none;transition: border-color .15s,transform .15
 .cart-table th,.cart-table td{text-align: left;padding: 12px 8px;border-bottom: 1px solid var(--line)}
 .cart-table td:last-child,.cart-table th:last-child{text-align: right}
 .cart-total{font-size: 1.2rem;font-weight: 800;text-align: right;margin-bottom: 18px}
+.pay__tip .chips{margin-bottom: 8px}
+.pay__tip-custom{max-width: 220px;margin-top: 4px}
+.pay__tip-custom.is-invalid{border-color: var(--error)}
+.pay__amount.is-invalid{border-color: var(--error)}
+.pay__summary{border: 1px solid var(--line);border-radius: 12px;padding: 14px 16px;background: var(--bg);display: grid;gap: 6px}
+.pay__summary div{display: flex;justify-content: space-between;font-size: .95rem;color: var(--muted)}
+.pay__summary b{color: var(--ink)}
+.pay__summary-total{border-top: 1px solid var(--line);padding-top: 8px;margin-top: 2px}
+.pay__summary-total span,.pay__summary-total b{color: var(--black) !important;font-weight: 800;font-size: 1.05rem}

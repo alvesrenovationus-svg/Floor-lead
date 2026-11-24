@@ -243,27 +243,67 @@
     document.querySelectorAll('a[href="#quote"]').forEach(function (a) { a.setAttribute('href', '/#quote'); });
   }
 })();
-/* Online payment: start a fresh cart with only this payment, then go to checkout */
+/* Online payment: invoice amount + optional tip, fresh cart, then checkout */
 (function () {
+  function money(n) { return '$' + n.toLocaleString('en-US'); }
   document.querySelectorAll('.js-pay-form').forEach(function (form) {
     var status = form.querySelector('.form-status');
     var btn = form.querySelector('button[type="submit"]');
+    var amt = form.querySelector('#pay-amount');
+    var tipBox = form.querySelector('.pay__tip');
+    var tipCustomWrap = form.querySelector('.pay__tip-custom');
+    var tipCustom = form.querySelector('#pay-tip-custom');
+    var sumAmount = form.querySelector('[data-sum-amount]'), sumTip = form.querySelector('[data-sum-tip]'), sumTotal = form.querySelector('[data-sum-total]');
+
+    function amount() { var n = parseInt(amt.value, 10); return n > 0 ? n : 0; }
+    function tip() {
+      if (!tipBox) return 0;
+      var c = form.querySelector('input[name="tip_choice"]:checked');
+      if (!c || c.value === '0') return 0;
+      if (c.value === 'custom') { var t = parseInt(tipCustom.value, 10); return t > 0 ? t : 0; }
+      return Math.round(amount() * parseFloat(c.value) / 100);
+    }
+    function update() {
+      if (tipBox) {
+        var c = form.querySelector('input[name="tip_choice"]:checked');
+        tipCustomWrap.hidden = !(c && c.value === 'custom');
+      }
+      var a = amount(), t = tip();
+      if (sumAmount) sumAmount.textContent = money(a);
+      if (sumTip) sumTip.textContent = money(t);
+      if (sumTotal) sumTotal.textContent = money(a + t);
+    }
+    form.addEventListener('input', update);
+    form.addEventListener('change', update);
+    update();
+
     form.addEventListener('submit', function (e) {
       e.preventDefault();
       status.className = 'form-status'; status.textContent = '';
       form.querySelectorAll('.is-invalid').forEach(function (el) { el.classList.remove('is-invalid'); });
-      var name = form.querySelector('#pay-name'), inv = form.querySelector('#pay-invoice'), amt = form.querySelector('#pay-amount');
+      var name = form.querySelector('#pay-name'), inv = form.querySelector('#pay-invoice');
       var errs = [];
       if (!name.value.trim()) { name.classList.add('is-invalid'); errs.push('your name'); }
       if (!inv.value.trim()) { inv.classList.add('is-invalid'); errs.push('the invoice or estimate number'); }
       var n = parseInt(amt.value, 10);
       if (!n || n < 1 || String(n) !== amt.value.trim()) { amt.closest('.pay__amount').classList.add('is-invalid'); errs.push('an amount in whole dollars'); }
+      var c = tipBox && form.querySelector('input[name="tip_choice"]:checked');
+      if (c && c.value === 'custom' && !(parseInt(tipCustom.value, 10) > 0)) { tipCustomWrap.classList.add('is-invalid'); errs.push('a tip amount (or choose No tip)'); }
       if (errs.length) { status.classList.add('is-error'); status.textContent = 'Please enter ' + errs.join(', ') + '.'; return; }
+
+      var props = {};
+      form.querySelectorAll('[name^="properties["]').forEach(function (el) {
+        if (el.value.trim()) props[el.name.slice(11, -1)] = el.value.trim();
+      });
+      var items = [{ id: parseInt(form.querySelector('input[name="id"]').value, 10), quantity: n, properties: props }];
+      var t = tip();
+      if (t > 0) items.push({ id: parseInt(tipBox.dataset.tipVariant, 10), quantity: t, properties: { 'Invoice / estimate #': props['Invoice / estimate #'] || '', 'Name': props['Name'] || '' } });
+
       btn.disabled = true; btn.textContent = 'Opening secure checkout...';
       var root = (window.Shopify && Shopify.routes && Shopify.routes.root) || '/';
       fetch(root + 'cart/clear.js', { method: 'POST', headers: { 'Content-Type': 'application/json' } })
         .then(function () {
-          return fetch(root + 'cart/add.js', { method: 'POST', body: new FormData(form) });
+          return fetch(root + 'cart/add.js', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ items: items }) });
         })
         .then(function (r) { if (!r.ok) throw new Error('add'); window.location.href = root + 'checkout'; })
         .catch(function () { form.submit(); });
