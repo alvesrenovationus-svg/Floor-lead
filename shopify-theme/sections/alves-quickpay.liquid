@@ -1,0 +1,44 @@
+{%- assign pay_product = section.settings.product | default: all_products['invoice-payment'] -%}
+{%- assign pay_variant = pay_product.selected_or_first_available_variant -%}
+{%- assign tip_product = section.settings.tip_product | default: all_products['tip'] -%}
+<section class="quickpay" id="pay">
+  <div class="container">
+    <div class="quickpay__card">
+      {%- assign logo = section.settings.logo | default: images['alves-logo.png'] -%}
+      {%- if logo %}<img src="{{ logo | image_url: width: 200 }}" alt="Alves Renovation" class="quickpay__logo" width="72" height="72">{% endif %}
+      <h1 class="quickpay__title">{{ section.settings.heading }}</h1>
+      <p class="quickpay__sub">{{ section.settings.subheading }}</p>
+
+      {%- if pay_variant -%}
+      <form class="js-quickpay" novalidate data-pay-variant="{{ pay_variant.id }}"{% if section.settings.show_tips and tip_product %} data-tip-variant="{{ tip_product.selected_or_first_available_variant.id }}"{% endif %}>
+        <label class="quickpay__label" for="qp-amount">Amount</label>
+        <div class="quickpay__amount"><span>$</span><input id="qp-amount" type="number" inputmode="numeric" min="1" step="1" placeholder="0" autocomplete="off" required></div>
+
+        <label class="quickpay__label" for="qp-invoice">Invoice # <em>(optional)</em></label>
+        <input id="qp-invoice" class="quickpay__input" type="text" placeholder="e.g. 1024" autocomplete="off">
+
+        {%- if section.settings.show_tips and tip_product -%}
+        <span class="quickpay__label">Tip for the crew <em>(optional)</em></span>
+        <div class="quickpay__tips" role="radiogroup" aria-label="Tip">
+          <label><input type="radio" name="qp-tip" value="0" checked><span>No tip</span></label>
+          {%- assign tip_opts = section.settings.tip_options | split: ',' -%}
+          {%- for t in tip_opts -%}{%- assign ts = t | strip -%}{%- if ts != blank -%}<label><input type="radio" name="qp-tip" value="{{ ts }}"><span>{{ ts }}%</span></label>{%- endif -%}{%- endfor -%}
+        </div>
+        {%- endif -%}
+
+        <button type="submit" class="btn btn--primary btn--lg btn--block quickpay__btn"><span data-qp-label>{{ section.settings.button_label }}</span> &rarr;</button>
+        <p class="form-status" role="status" aria-live="polite"></p>
+      </form>
+      <p class="quickpay__secure">&#128274; {{ section.settings.secure_text }}</p>
+      {%- else -%}
+      <p>{{ section.settings.unavailable_text }}</p>
+      <a class="btn btn--primary" href="/pages/contact">Contact us</a>
+      {%- endif -%}
+      <p class="quickpay__help">{{ section.settings.help_text }}</p>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{"name": "Alves quick pay", "settings": [{"type": "image_picker", "id": "logo", "label": "Logo"}, {"type": "product", "id": "product", "label": "Payment product ($1.00 item)"}, {"type": "text", "id": "heading", "label": "Heading", "default": "Pay Alves Renovation"}, {"type": "text", "id": "subheading", "label": "Subheading", "default": "Enter the amount and you'll go straight to secure checkout."}, {"type": "text", "id": "button_label", "label": "Button label", "default": "Pay now"}, {"type": "checkbox", "id": "show_tips", "label": "Show tip options", "default": true}, {"type": "product", "id": "tip_product", "label": "Tip product ($1.00 item)"}, {"type": "text", "id": "tip_options", "label": "Tip percentages (comma separated)", "default": "10,15,20"}, {"type": "text", "id": "secure_text", "label": "Security line", "default": "Secure checkout by Shopify · Card · Apple Pay · Google Pay · Sales tax added where applicable"}, {"type": "text", "id": "help_text", "label": "Help line", "default": "Questions about your invoice? Call or text (267) 616-0381."}, {"type": "text", "id": "unavailable_text", "label": "Message if payments are not set up", "default": "Online payments are not available right now. Please contact us to pay your invoice."}], "presets": [{"name": "Alves quick pay"}]}
+{% endschema %}

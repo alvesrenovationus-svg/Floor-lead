@@ -437,3 +437,28 @@ a.mini-service{text-decoration: none;transition: border-color .15s,transform .15
 .pay__summary b{color: var(--ink)}
 .pay__summary-total{border-top: 1px solid var(--line);padding-top: 8px;margin-top: 2px}
 .pay__summary-total span,.pay__summary-total b{color: var(--black) !important;font-weight: 800;font-size: 1.05rem}
+/* ---------- Quick pay page ---------- */
+.quickpay{background: var(--black) radial-gradient(ellipse at 50% 0%,#2a2219 0%,transparent 60%);padding: 56px 0 72px;min-height: calc(100vh - 76px)}
+.quickpay__card{max-width: 480px;margin: 0 auto;background: var(--white);border-radius: 22px;padding: 32px 28px;box-shadow: 0 30px 70px -20px rgba(0,0,0,.8);border-top: 6px solid var(--gold);text-align: center}
+.quickpay__logo{width: 72px;height: 72px;border-radius: 50%;margin: -68px auto 10px;box-shadow: 0 0 0 4px var(--white),0 10px 24px -8px rgba(0,0,0,.6)}
+.quickpay__title{font-size: 1.7rem;color: var(--black);margin-bottom: 4px}
+.quickpay__sub{color: var(--muted);margin: 0 0 22px}
+.js-quickpay{text-align: left;display: grid;gap: 8px}
+.quickpay__label{font-weight: 700;font-size: .9rem;color: var(--black);margin-top: 6px}
+.quickpay__label em{font-weight: 500;font-style: normal;color: var(--muted)}
+.quickpay__amount{display: flex;align-items: center;border: 2px solid var(--line);border-radius: 14px;padding: 4px 14px;transition: border-color .15s}
+.quickpay__amount:focus-within{border-color: var(--gold)}
+.quickpay__amount span{font-size: 2rem;font-weight: 800;color: var(--black)}
+.quickpay__amount input{border: 0;outline: 0;width: 100%;font: inherit;font-size: 2.2rem;font-weight: 800;color: var(--black);padding: 6px 8px;background: transparent}
+.quickpay__amount.is-invalid{border-color: var(--error)}
+.quickpay__input{width: 100%;padding: 13px 14px;border: 1.5px solid var(--line);border-radius: 10px;font: inherit}
+.quickpay__input:focus{outline: none;border-color: var(--gold)}
+.quickpay__tips{display: grid;grid-template-columns: repeat(4,1fr);gap: 6px}
+.quickpay__tips label{cursor: pointer}
+.quickpay__tips input{position: absolute;opacity: 0;width: 1px;height: 1px}
+.quickpay__tips span{display: block;text-align: center;padding: 10px 4px;border: 1.5px solid var(--line);border-radius: 10px;font-weight: 700;font-size: .9rem}
+.quickpay__tips input:checked + span{background: var(--black);border-color: var(--gold);color: var(--gold-light)}
+.quickpay__tips input:focus-visible + span{box-shadow: 0 0 0 3px rgba(201,150,95,.35)}
+.quickpay__btn{margin-top: 14px;font-size: 1.15rem}
+.quickpay__secure{font-size: .8rem;color: var(--muted);margin: 14px 0 4px}
+.quickpay__help{font-size: .85rem;color: var(--muted);margin: 0}

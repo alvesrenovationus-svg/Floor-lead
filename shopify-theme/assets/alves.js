@@ -314,7 +314,7 @@
 (function () {
   var PAY_VARIANT = 68161604518173; /* "Invoice Payment" item, $1.00 each */
   document.addEventListener('click', function (e) {
-    var a = e.target.closest && e.target.closest('a[href="#pay-online"], a[href="/pages/pay"]');
+    var a = e.target.closest && e.target.closest('a[href="#pay-online"]');
     if (!a) return;
     e.preventDefault();
     var raw = window.prompt('Alves Renovation — Pay Online\n\nAmount to pay in US dollars (whole dollars, e.g. 1250):');
@@ -326,5 +326,52 @@
     var url = root + 'cart/' + PAY_VARIANT + ':' + n;
     if (inv.trim()) url += '?attributes[Invoice / estimate %23]=' + encodeURIComponent(inv.trim());
     window.location.href = url;
+  });
+})();
+/* Quick pay page: amount (+ optional invoice # and tip) straight to Shopify checkout */
+(function () {
+  var form = document.querySelector('.js-quickpay');
+  if (!form) return;
+  var amt = form.querySelector('#qp-amount'), inv = form.querySelector('#qp-invoice');
+  var label = form.querySelector('[data-qp-label]'), base = label.textContent;
+  var status = form.querySelector('.form-status'), btn = form.querySelector('button[type="submit"]');
+  function amount() { var n = parseInt(amt.value, 10); return n > 0 ? n : 0; }
+  function tip() {
+    var c = form.querySelector('input[name="qp-tip"]:checked');
+    return c && c.value !== '0' ? Math.round(amount() * parseFloat(c.value) / 100) : 0;
+  }
+  function update() {
+    var total = amount() + tip();
+    label.textContent = total ? base + ' $' + total.toLocaleString('en-US') : base;
+  }
+  form.addEventListener('input', update);
+  form.addEventListener('change', update);
+  try { var q = new URLSearchParams(location.search); if (q.get('amount')) amt.value = parseInt(q.get('amount'), 10) || ''; if (q.get('invoice')) inv.value = q.get('invoice'); } catch (e) {}
+  update();
+  if (!amt.value) amt.focus();
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    status.className = 'form-status'; status.textContent = '';
+    amt.closest('.quickpay__amount').classList.remove('is-invalid');
+    var n = amount();
+    if (!n || String(n) !== amt.value.trim()) {
+      amt.closest('.quickpay__amount').classList.add('is-invalid');
+      status.classList.add('is-error'); status.textContent = 'Please enter the amount in whole dollars.';
+      amt.focus(); return;
+    }
+    var props = inv.value.trim() ? { 'Invoice #': inv.value.trim() } : {};
+    var items = [{ id: parseInt(form.dataset.payVariant, 10), quantity: n, properties: props }];
+    var t = tip();
+    if (t > 0 && form.dataset.tipVariant) items.push({ id: parseInt(form.dataset.tipVariant, 10), quantity: t, properties: props });
+    btn.disabled = true; label.textContent = 'Opening secure checkout...';
+    var root = (window.Shopify && Shopify.routes && Shopify.routes.root) || '/';
+    fetch(root + 'cart/clear.js', { method: 'POST', headers: { 'Content-Type': 'application/json' } })
+      .then(function () { return fetch(root + 'cart/add.js', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ items: items }) }); })
+      .then(function (r) { if (!r.ok) throw new Error('add'); window.location.href = root + 'checkout'; })
+      .catch(function () {
+        var url = root + 'cart/' + items.map(function (i) { return i.id + ':' + i.quantity; }).join(',');
+        window.location.href = url;
+      });
   });
 })();
