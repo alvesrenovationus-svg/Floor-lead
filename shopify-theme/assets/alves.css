@@ -462,3 +462,5 @@ a.mini-service{text-decoration: none;transition: border-color .15s,transform .15
 .quickpay__btn{margin-top: 14px;font-size: 1.15rem}
 .quickpay__secure{font-size: .8rem;color: var(--muted);margin: 14px 0 4px}
 .quickpay__help{font-size: .85rem;color: var(--muted);margin: 0}
+.pay__form{gap: 8px}
+.pay__form .quickpay__btn{margin-top: 12px}
