@@ -310,3 +310,21 @@
     });
   });
 })();
+/* Pay Online button: ask the amount, then go straight to Shopify checkout (no extra page) */
+(function () {
+  var PAY_VARIANT = 68161604518173; /* "Invoice Payment" item, $1.00 each */
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a[href="#pay-online"], a[href="/pages/pay"]');
+    if (!a) return;
+    e.preventDefault();
+    var raw = window.prompt('Alves Renovation — Pay Online\n\nAmount to pay in US dollars (whole dollars, e.g. 1250):');
+    if (raw === null) return;
+    var n = parseInt(String(raw).replace(/[^0-9.]/g, ''), 10);
+    if (!n || n < 1) { window.alert('Please enter a valid amount in whole dollars.'); return; }
+    var inv = window.prompt('Invoice or estimate number (optional):') || '';
+    var root = (window.Shopify && Shopify.routes && Shopify.routes.root) || '/';
+    var url = root + 'cart/' + PAY_VARIANT + ':' + n;
+    if (inv.trim()) url += '?attributes[Invoice / estimate %23]=' + encodeURIComponent(inv.trim());
+    window.location.href = url;
+  });
+})();
