@@ -464,3 +464,19 @@ a.mini-service{text-decoration: none;transition: border-color .15s,transform .15
 .quickpay__help{font-size: .85rem;color: var(--muted);margin: 0}
 .pay__form{gap: 8px}
 .pay__form .quickpay__btn{margin-top: 12px}
+/* ---------- Payment trust block ---------- */
+.pay-trust{margin-top: 26px;padding: 20px;border: 1px solid var(--line);border-radius: 16px;background: var(--white);box-shadow: 0 10px 30px -18px rgba(0,0,0,.25)}
+.pay-trust__title{margin: 0 0 12px !important;font-family: var(--display);font-weight: 800;font-size: 1rem !important;color: var(--black) !important}
+.pay-badges{list-style: none;padding: 0;margin: 0;display: flex;flex-wrap: wrap;gap: 6px}
+.pay-badges li{display: flex}
+.pay-badges__icon{width: 42px;height: 28px;border-radius: 4px;box-shadow: 0 0 0 1px var(--line)}
+.pay-trust__list{list-style: none;padding: 0;margin: 16px 0 0;display: grid;gap: 12px}
+.pay-trust__list li{display: flex;gap: 12px;align-items: flex-start}
+.pay-trust__icon{flex: none;width: 34px;height: 34px;border-radius: 50%;background: var(--black);display: grid;place-items: center}
+.pay-trust__icon svg{width: 18px;height: 18px;fill: var(--gold)}
+.pay-trust__list strong{display: block;color: var(--black);font-size: .95rem}
+.pay-trust__list small{display: block;color: var(--muted);font-size: .85rem}
+.pay-trust__note{margin: 14px 0 0 !important;padding-top: 12px;border-top: 1px solid var(--line);font-size: .82rem !important;color: var(--muted) !important}
+.pay-secure-line{display: flex;flex-direction: column;align-items: center;gap: 8px;margin-top: 4px;font-size: .82rem;font-weight: 600;color: var(--muted)}
+.pay-secure-line .pay-badges{justify-content: center}
+.pay-secure-line .pay-badges__icon{width: 34px;height: 22px}
