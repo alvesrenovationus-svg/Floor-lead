@@ -328,50 +328,59 @@
     window.location.href = url;
   });
 })();
-/* Quick pay page: amount (+ optional invoice # and tip) straight to Shopify checkout */
+/* Quick pay page: amount in dollars and cents (+ optional invoice # and tip) straight to Shopify checkout */
 (function () {
   var form = document.querySelector('.js-quickpay');
   if (!form) return;
   var amt = form.querySelector('#qp-amount'), inv = form.querySelector('#qp-invoice');
   var label = form.querySelector('[data-qp-label]'), base = label.textContent;
   var status = form.querySelector('.form-status'), btn = form.querySelector('button[type="submit"]');
-  function amount() { var n = parseInt(amt.value, 10); return n > 0 ? n : 0; }
-  function tip() {
+  var d = form.dataset;
+  function cents() {
+    var v = String(amt.value).replace(/[$,\s]/g, '');
+    if (!/^\d+(\.\d{1,2})?$/.test(v)) return 0;
+    return Math.round(parseFloat(v) * 100);
+  }
+  function tipCents() {
     var c = form.querySelector('input[name="qp-tip"]:checked');
-    return c && c.value !== '0' ? Math.round(amount() * parseFloat(c.value) / 100) : 0;
+    return c && c.value !== '0' ? Math.round(cents() * parseFloat(c.value) / 100) : 0;
   }
-  function update() {
-    var total = amount() + tip();
-    label.textContent = total ? base + ' $' + total.toLocaleString('en-US') : base;
-  }
+  function fmt(c) { return '$' + (c / 100).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+  function update() { var t = cents() + tipCents(); label.textContent = t ? base + ' ' + fmt(t) : base; }
   form.addEventListener('input', update);
   form.addEventListener('change', update);
-  try { var q = new URLSearchParams(location.search); if (q.get('amount')) amt.value = parseInt(q.get('amount'), 10) || ''; if (q.get('invoice')) inv.value = q.get('invoice'); } catch (e) {}
+  try { var q = new URLSearchParams(location.search); if (q.get('amount')) amt.value = q.get('amount'); if (q.get('invoice')) inv.value = q.get('invoice'); } catch (e) {}
   update();
-  if (!amt.value) amt.focus();
+
+  function split(total, dollarId, centId, props) {
+    var out = [], dl = Math.floor(total / 100), ct = total % 100;
+    if (!centId) { dl = Math.round(total / 100); ct = 0; }
+    if (dl > 0) out.push({ id: parseInt(dollarId, 10), quantity: dl, properties: props });
+    if (ct > 0) out.push({ id: parseInt(centId, 10), quantity: ct, properties: props });
+    return out;
+  }
 
   form.addEventListener('submit', function (e) {
     e.preventDefault();
     status.className = 'form-status'; status.textContent = '';
-    amt.closest('.quickpay__amount').classList.remove('is-invalid');
-    var n = amount();
-    if (!n || String(n) !== amt.value.trim()) {
-      amt.closest('.quickpay__amount').classList.add('is-invalid');
-      status.classList.add('is-error'); status.textContent = 'Please enter the amount in whole dollars.';
+    var box = amt.closest('.quickpay__amount'); box.classList.remove('is-invalid');
+    var c = cents();
+    if (c < 100) {
+      box.classList.add('is-invalid'); status.classList.add('is-error');
+      status.textContent = 'Please enter an amount of at least $1.00 (for example 1250 or 1250.45).';
       amt.focus(); return;
     }
     var props = inv.value.trim() ? { 'Invoice #': inv.value.trim() } : {};
-    var items = [{ id: parseInt(form.dataset.payVariant, 10), quantity: n, properties: props }];
-    var t = tip();
-    if (t > 0 && form.dataset.tipVariant) items.push({ id: parseInt(form.dataset.tipVariant, 10), quantity: t, properties: props });
+    var items = split(c, d.payVariant, d.payCents, props);
+    var t = tipCents();
+    if (t > 0 && d.tipVariant) items = items.concat(split(t, d.tipVariant, d.tipCents, props));
     btn.disabled = true; label.textContent = 'Opening secure checkout...';
     var root = (window.Shopify && Shopify.routes && Shopify.routes.root) || '/';
     fetch(root + 'cart/clear.js', { method: 'POST', headers: { 'Content-Type': 'application/json' } })
       .then(function () { return fetch(root + 'cart/add.js', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ items: items }) }); })
       .then(function (r) { if (!r.ok) throw new Error('add'); window.location.href = root + 'checkout'; })
       .catch(function () {
-        var url = root + 'cart/' + items.map(function (i) { return i.id + ':' + i.quantity; }).join(',');
-        window.location.href = url;
+        window.location.href = root + 'cart/' + items.map(function (i) { return i.id + ':' + i.quantity; }).join(',');
       });
   });
 })();

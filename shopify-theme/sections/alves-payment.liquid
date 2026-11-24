@@ -1,6 +1,9 @@
 {%- assign pay_product = section.settings.product | default: all_products['invoice-payment'] -%}
-{%- assign pay_variant = pay_product.selected_or_first_available_variant -%}
+{%- assign pay_variant = pay_product.variants | where: 'title', 'Invoice payment' | first | default: pay_product.selected_or_first_available_variant -%}
+{%- assign pay_cents = pay_product.variants | where: 'title', 'Cents' | first -%}
 {%- assign tip_product = section.settings.tip_product | default: all_products['tip'] -%}
+{%- assign tip_variant = tip_product.variants | where: 'title', 'Tip' | first | default: tip_product.selected_or_first_available_variant -%}
+{%- assign tip_cents = tip_product.variants | where: 'title', 'Cents' | first -%}
 <section class="section" id="pay">
   <div class="container quote pay">
     <div class="pay__copy">
@@ -15,9 +18,9 @@
     </div>
 
     {%- if pay_variant -%}
-    <form class="quote__form js-quickpay pay__form" novalidate data-pay-variant="{{ pay_variant.id }}"{% if section.settings.show_tips and tip_product %} data-tip-variant="{{ tip_product.selected_or_first_available_variant.id }}"{% endif %}>
+    <form class="quote__form js-quickpay pay__form" novalidate data-pay-variant="{{ pay_variant.id }}"{% if pay_cents %} data-pay-cents="{{ pay_cents.id }}"{% endif %}{% if section.settings.show_tips and tip_product %} data-tip-variant="{{ tip_variant.id }}"{% if tip_cents %} data-tip-cents="{{ tip_cents.id }}"{% endif %}{% endif %}>
       <label class="quickpay__label" for="qp-amount">Amount to pay</label>
-      <div class="quickpay__amount"><span>$</span><input id="qp-amount" type="number" inputmode="numeric" min="1" step="1" placeholder="0" autocomplete="off" required></div>
+      <div class="quickpay__amount"><span>$</span><input id="qp-amount" type="text" inputmode="decimal" placeholder="0.00" autocomplete="off" required></div>
 
       <label class="quickpay__label" for="qp-invoice">Invoice # <em>(optional)</em></label>
       <input id="qp-invoice" class="quickpay__input" type="text" placeholder="e.g. 1024" autocomplete="off">
@@ -42,5 +45,5 @@
 </section>
 
 {% schema %}
-{"name": "Alves payment", "settings": [{"type": "product", "id": "product", "label": "Payment product ($1.00 item)"}, {"type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Secure online payment"}, {"type": "text", "id": "heading", "label": "Heading", "default": "Pay your invoice"}, {"type": "textarea", "id": "text", "label": "Text", "default": "Pay a deposit, a progress payment or your final invoice in seconds."}, {"type": "textarea", "id": "steps", "label": "Steps (one per line)", "default": "Type the amount\nAdd your invoice # (optional)\nTap Pay now and check out securely"}, {"type": "text", "id": "secure_text", "label": "Security note", "default": "Secure checkout by Shopify · Card · Apple Pay · Google Pay. Sales tax added where applicable."}, {"type": "text", "id": "button_label", "label": "Button label", "default": "Pay now"}, {"type": "checkbox", "id": "show_tips", "label": "Show tip options", "default": true}, {"type": "product", "id": "tip_product", "label": "Tip product ($1.00 item)"}, {"type": "text", "id": "tip_options", "label": "Tip percentages (comma separated)", "default": "10,15,20"}, {"type": "text", "id": "fineprint", "label": "Fine print", "default": "Questions about your invoice? Call or text (267) 616-0381."}, {"type": "text", "id": "unavailable_text", "label": "Message if payments are not set up", "default": "Online payments are not available right now. Please contact us to pay your invoice."}], "presets": [{"name": "Alves payment"}]}
+{"name": "Alves payment", "settings": [{"type": "product", "id": "product", "label": "Payment product ($1.00 item)"}, {"type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Secure online payment"}, {"type": "text", "id": "heading", "label": "Heading", "default": "Pay your invoice"}, {"type": "textarea", "id": "text", "label": "Text", "default": "Pay a deposit, a progress payment or your final invoice in seconds."}, {"type": "textarea", "id": "steps", "label": "Steps (one per line)", "default": "Type the amount\nAdd your invoice # (optional)\nTap Pay now and check out securely"}, {"type": "text", "id": "secure_text", "label": "Security note", "default": "Secure checkout by Shopify · Card · Apple Pay · Google Pay. Cents accepted. Sales tax added where applicable."}, {"type": "text", "id": "button_label", "label": "Button label", "default": "Pay now"}, {"type": "checkbox", "id": "show_tips", "label": "Show tip options", "default": true}, {"type": "product", "id": "tip_product", "label": "Tip product ($1.00 item)"}, {"type": "text", "id": "tip_options", "label": "Tip percentages (comma separated)", "default": "10,15,20"}, {"type": "text", "id": "fineprint", "label": "Fine print", "default": "Questions about your invoice? Call or text (267) 616-0381."}, {"type": "text", "id": "unavailable_text", "label": "Message if payments are not set up", "default": "Online payments are not available right now. Please contact us to pay your invoice."}], "presets": [{"name": "Alves payment"}]}
 {% endschema %}
