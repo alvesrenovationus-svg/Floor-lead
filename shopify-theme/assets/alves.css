@@ -480,3 +480,19 @@ a.mini-service{text-decoration: none;transition: border-color .15s,transform .15
 .pay-secure-line{display: flex;flex-direction: column;align-items: center;gap: 8px;margin-top: 4px;font-size: .82rem;font-weight: 600;color: var(--muted)}
 .pay-secure-line .pay-badges{justify-content: center}
 .pay-secure-line .pay-badges__icon{width: 34px;height: 22px}
+/* ---------- Pay page: stacked layout (title, form, card info) ---------- */
+.pay--stacked{display: block;max-width: 600px;margin: 0 auto}
+.pay--stacked .pay__copy{text-align: center;margin-bottom: 22px}
+.pay--stacked .pay__copy h2{margin-bottom: 8px}
+.pay--stacked .pay__copy > p{margin: 0 auto 16px;max-width: 480px}
+.pay__steps{list-style: none;counter-reset: ps;padding: 0;margin: 0;display: flex;flex-wrap: wrap;justify-content: center;gap: 8px 18px}
+.pay__steps li{counter-increment: ps;display: flex;align-items: center;gap: 8px;font-weight: 600;font-size: .92rem;color: var(--ink)}
+.pay__steps li::before{content: counter(ps);width: 24px;height: 24px;border-radius: 50%;background: var(--black);color: var(--gold);font-family: var(--display);font-weight: 800;font-size: .78rem;display: grid;place-items: center}
+.pay--stacked .pay__form{box-shadow: 0 24px 50px -24px rgba(0,0,0,.45)}
+.pay--stacked .pay-trust{margin-top: 20px}
+.pay--stacked .pay-trust__title{text-align: center}
+.pay--stacked .pay-trust .pay-badges{justify-content: center}
+.pay--stacked .pay-trust__list{grid-template-columns: repeat(3,1fr);gap: 14px}
+.pay--stacked .pay-trust__list li{flex-direction: column;align-items: center;text-align: center;gap: 8px}
+.pay--stacked .pay-trust__note{text-align: center}
+@media (max-width: 600px){.pay--stacked .pay-trust__list{grid-template-columns: 1fr}.pay--stacked .pay-trust__list li{flex-direction: row;align-items: flex-start;text-align: left}.pay__steps{flex-direction: column;align-items: flex-start;max-width: 280px;margin: 0 auto}}
