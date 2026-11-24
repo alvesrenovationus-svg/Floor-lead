@@ -415,3 +415,16 @@ h1, h2, h3 { font-family: var(--display); line-height: 1.15; margin: 0 0 .5em; }
 .ba-info .rte p, .sp-block__copy .rte p { margin: 0 0 1em; }
 a.mini-service{text-decoration: none;transition: border-color .15s,transform .15s,box-shadow .15s}a.mini-service:hover{border-color: var(--gold);transform: translateY(-2px);box-shadow: var(--shadow)}.mini-service__arrow{margin-left: auto;color: var(--gold-dark);transition: margin .2s}a.mini-service:hover .mini-service__arrow{margin-right: -4px}
 .other-services{grid-template-columns: repeat(auto-fit,minmax(220px,1fr))}
+/* ---------- Online payment ---------- */
+.pay{align-items: center}
+.pay__copy h2{font-size: clamp(2rem,4vw,2.7rem);color: var(--black)}
+.pay__copy > p{color: var(--muted);font-size: 1.08rem}
+.pay__secure{font-size: .92rem;color: var(--muted) !important;margin-top: 6px}
+.pay__amount{display: flex;align-items: center;border: 1.5px solid var(--line);border-radius: 10px;background: var(--white);overflow: hidden}
+.pay__amount span{padding: 0 4px 0 14px;font-weight: 800;font-size: 1.2rem;color: var(--black)}
+.pay__amount input{border: 0 !important;box-shadow: none !important;font-size: 1.2rem;font-weight: 700}
+.pay__hint{display: block;margin-top: 6px;color: var(--muted);font-size: .82rem}
+.cart-table{width: 100%;border-collapse: collapse;margin: 10px 0 24px}
+.cart-table th,.cart-table td{text-align: left;padding: 12px 8px;border-bottom: 1px solid var(--line)}
+.cart-table td:last-child,.cart-table th:last-child{text-align: right}
+.cart-total{font-size: 1.2rem;font-weight: 800;text-align: right;margin-bottom: 18px}

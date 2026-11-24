@@ -243,3 +243,30 @@
     document.querySelectorAll('a[href="#quote"]').forEach(function (a) { a.setAttribute('href', '/#quote'); });
   }
 })();
+/* Online payment: start a fresh cart with only this payment, then go to checkout */
+(function () {
+  document.querySelectorAll('.js-pay-form').forEach(function (form) {
+    var status = form.querySelector('.form-status');
+    var btn = form.querySelector('button[type="submit"]');
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      status.className = 'form-status'; status.textContent = '';
+      form.querySelectorAll('.is-invalid').forEach(function (el) { el.classList.remove('is-invalid'); });
+      var name = form.querySelector('#pay-name'), inv = form.querySelector('#pay-invoice'), amt = form.querySelector('#pay-amount');
+      var errs = [];
+      if (!name.value.trim()) { name.classList.add('is-invalid'); errs.push('your name'); }
+      if (!inv.value.trim()) { inv.classList.add('is-invalid'); errs.push('the invoice or estimate number'); }
+      var n = parseInt(amt.value, 10);
+      if (!n || n < 1 || String(n) !== amt.value.trim()) { amt.closest('.pay__amount').classList.add('is-invalid'); errs.push('an amount in whole dollars'); }
+      if (errs.length) { status.classList.add('is-error'); status.textContent = 'Please enter ' + errs.join(', ') + '.'; return; }
+      btn.disabled = true; btn.textContent = 'Opening secure checkout...';
+      var root = (window.Shopify && Shopify.routes && Shopify.routes.root) || '/';
+      fetch(root + 'cart/clear.js', { method: 'POST', headers: { 'Content-Type': 'application/json' } })
+        .then(function () {
+          return fetch(root + 'cart/add.js', { method: 'POST', body: new FormData(form) });
+        })
+        .then(function (r) { if (!r.ok) throw new Error('add'); window.location.href = root + 'checkout'; })
+        .catch(function () { form.submit(); });
+    });
+  });
+})();
